@@ -1,0 +1,133 @@
+<main class="content">
+    <div class="container-fluid p-0">
+        <h1 class="h3 mb-3">Order Details</h1>
+
+        <div class="row">
+    
+         
+
+
+            <div class="col-12 mt-3">
+                <div class="card">
+
+                    <div class="card-body">
+                        <table id="datatables-reponsive" class="table table-striped" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <!-- <th>Transaction Id</th> -->
+                                    <th>Customer Name</th>
+                                    <th>Date of Order</th>
+                                    <th>Quantity</th>
+                                    <th>Shipping address</th>
+                                    <th>Amount</th>
+                                    <th>Tax</th>
+                                   
+                                    <th>Mode of payment</th>
+                                    <th>payment status</th>
+                                    <th>order status</th>
+
+                                    <th>delivery status</th>
+                                    <th>options</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% locals.orders.forEach(element => { %>
+                                    <% element.products.forEach(prd => { %>
+                                        <tr>
+                                            <!-- <td><%#= element._id %></td> -->
+                                            <td><%= element.userId.name %></td>
+                                            <td><%= new Date(element.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour12: true }) %></td>
+                                            <td><%= prd.quantity %></td>
+                                            <td>
+                                                <!-- <span><%#= element.deliveryDetails.typeofaddress %></span> -->
+                                                <span><%= element.deliveryDetails.name %></span>
+                                                <span><%= element.deliveryDetails.mobile %></span>
+                                                <span><%= element.deliveryDetails.address %></span>
+                                                <span><%= element.deliveryDetails.city %></span>
+                                                <span><%= element.deliveryDetails.state %></span>
+                                                <span><%= element.deliveryDetails.zip %></span>
+
+                                            </td>
+                                            <td><%= (prd.currentPrice+prd.tax)*(prd.quantity)%></td>
+                                            <td><%= (prd.tax)*(prd.quantity) %></td>
+                                          
+                                            <td><%= element.paymentMethod %></td>
+                                            <td><%= element.paymentstatus %></td>
+                                            <td><%= prd.orderstatus %>
+                                            </td>
+                                            <form action="/admin/order-details/?orderId=<%=element._id %>&productId=<%= prd.item._id %>" method="post">
+                                                <td>
+
+                                                    <select name="deliveryStatus" id="" <%= (prd.orderstatus === 'cancelled' || element.paymentstatus === 'failed') ? 'disabled' : '' %>>
+                                                        
+                                                        <option value="default">
+                                                            <%= prd.deliverystatus %></option>
+                                                        <option value="shipped">
+                                                            shipped
+                                                        </option>
+                                                        <option value="outofdelivery">
+                                                            out of delivery
+                                                        </option>
+                                                        <option value="delivered">
+                                                            delivered
+                                                        </option>
+                                                        <option value="cancelled">
+                                                            cancelled
+                                                        </option>
+                                                        <option value="returned">
+                                                            returned
+                                                        </option>
+
+                                                    </select>
+
+
+                                                </td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-success">save</button>
+                                                </td>
+                                            </form>
+                                        </tr>
+                                    <% }) %>
+                                <% }) %>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script>
+    $(document).ready(function () {
+        $("#datatables-reponsive").DataTable();
+    });
+</script>
+
+
+<script>
+
+    document.getElementById("my-dropdown").addEventListener("change", function () {
+        var selectedValue = this.value;
+        if (selectedValue === "year") {
+            document.getElementById("yearDiv").style.display = "block";
+            document.getElementById("monthDiv").style.display = "none";
+            document.getElementById("dayDiv").style.display = "none";
+        } else if (selectedValue === "month") {
+            document.getElementById("yearDiv").style.display = "block";
+            document.getElementById("monthDiv").style.display = "block";
+            document.getElementById("dayDiv").style.display = "none";
+        } else if (selectedValue === "day") {
+            document.getElementById("yearDiv").style.display = "block";
+            document.getElementById("monthDiv").style.display = "block";
+            document.getElementById("dayDiv").style.display = "block";
+        } else {
+            document.getElementById("yearDiv").style.display = "none";
+            document.getElementById("monthDiv").style.display = "none";
+            document.getElementById("dayDiv").style.display = "none";
+        }
+    });
+</script>

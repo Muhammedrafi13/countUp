@@ -1,4 +1,58 @@
 <!-- Categories Section Begin -->
+<style>
+     #loader {
+       visibility: hidden;
+          display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+      
+      #loader > span {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        border-top-color: #000;
+        animation: spin 1s linear infinite;
+      }
+      
+      /* CSS code for the loader animation */
+      @keyframes spin {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      
+     
+</style>
+
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+
+<div id="loader" >
+  <span ></span>
+</div>
 <section class="categories">
   <div class="container-fluid">
     <div class="row">
@@ -8,18 +62,22 @@
           data-setbg="/user/img/categories/category-1.jpg"
         >
           <div class="categories__text">
-            <h1>Women’s fashion</h1>
+            <h1>Explore Fashion  </h1>
             <p>
-              Sitamet, consectetur adipiscing elit, sed do eiusmod tempor
-              incidid-unt labore edolore magna aliquapendisse ultrices gravida.
+              Count up, The perfect outfit
+              <!-- Sitamet, consectetur adipiscing elit, sed do eiusmod tempor
+              incidid-unt labore edolore magna aliquapendisse ultrices gravida. -->
             </p>
-            <a href="#">Shop immediate</a>
+            <a href="/shop">Shop Now</a>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+
+
 <!-- Categories Section End -->
 
 <!-- Product Section Begin -->
@@ -36,36 +94,29 @@
           <li class="active" data-filter="*">All</li>
           <li data-filter=".women">Women</li>
           <li data-filter=".men">Men</li>
-          <li data-filter=".kid">Kids</li>
-          <li data-filter=".accessories">Accessories</li>
-          <li data-filter=".cosmetic">Cosmetics</li>
+          <li data-filter=".girls">Girls</li>
+          <li data-filter=".boys">Boys</li>
+      
         </ul>
       </div>
     </div>
+   
     <div class="row property__gallery">
+   
+        <% for(let i = 0; i < locals.productsByGender.women.length; i++) { %>
+          
+    
       <div class="col-lg-3 col-md-4 col-sm-6 mix women">
         <div class="product__item">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-1.jpg"
-          >
+          <div class="product__item__pic set-bg"  data-setbg="/product-images/<%= productsByGender.women[i].images[0] %>" onclick="location.href='/image/<%= productsByGender.women[i]._id %>';">
             <div class="label new">New</div>
             <ul class="product__hover">
               <li>
-                <a href="img/product/product-1.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
+                                <a id="" type="button" onclick="addToWishList('<%=productsByGender.women[i]._id%>');event.stopPropagation();"><span class="icon_heart_alt"></span></a>
+                            </li>
           </div>
           <div class="product__item__text">
-            <h6><a href="#">Buttons tweed blazer</a></h6>
+            <h6><a href="#"><%= productsByGender.women[i].productName %></a></h6>
             <div class="rating">
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
@@ -73,32 +124,27 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 59.0</div>
+            <div class="product__price">Rs.<%= productsByGender.women[i].salePrice %></div>
           </div>
         </div>
       </div>
+      <% } %>
+
+      <% for(let i = 0; i < locals.productsByGender.men.length; i++) { %>
       <div class="col-lg-3 col-md-4 col-sm-6 mix men">
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-2.jpg"
-          >
+            data-setbg="/product-images/<%= productsByGender.men[i].images[0] %>"
+            onclick="location.href='/image/<%= productsByGender.men[i]._id %>';">
             <ul class="product__hover">
               <li>
-                <a href="img/product/product-2.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
+                <a id="" type="button" onclick="addToWishList('<%=productsByGender.men[i]._id%>');event.stopPropagation();"><span class="icon_heart_alt"></span></a>
+            </li>
             </ul>
           </div>
           <div class="product__item__text">
-            <h6><a href="#">Flowy striped skirt</a></h6>
+            <h6><a href="#"><%= productsByGender.men[i].productName %></a></h6>
             <div class="rating">
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
@@ -106,33 +152,27 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 49.0</div>
+            <div class="product__price">Rs. <%= productsByGender.men[i].salePrice %></div>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 mix accessories">
+      <% } %>
+
+      <% for(let i = 0; i < locals.productsByGender.girls.length; i++) { %>
+      <div class="col-lg-3 col-md-4 col-sm-6 mix girls">
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-3.jpg"
-          >
-            <div class="label stockout">out of stock</div>
+           data-setbg="/product-images/<%= productsByGender.girls[i].images[0] %>"
+           onclick="location.href='/image/<%= productsByGender.girls[i]._id %>';" >
             <ul class="product__hover">
               <li>
-                <a href="img/product/product-3.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
+                <a id="" type="button" onclick="addToWishList('<%=productsByGender.girls[i]._id%>');event.stopPropagation();"><span class="icon_heart_alt"></span></a>
+            </li>
             </ul>
           </div>
           <div class="product__item__text">
-            <h6><a href="#">Cotton T-Shirt</a></h6>
+            <h6><a href="#"><%= productsByGender.girls[i].productName %></a></h6>
             <div class="rating">
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
@@ -140,32 +180,28 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 59.0</div>
+            <div class="product__price">Rs.<%= productsByGender.boys[i].salePrice%></div>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 mix cosmetic">
+      <% } %>
+      <% for(let i = 0; i < locals.productsByGender.boys.length; i++) { %>
+      <div class="col-lg-3 col-md-4 col-sm-6 mix boys">
         <div class="product__item">
           <div
             class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-4.jpg"
-          >
+            data-setbg="/product-images/<%= productsByGender.boys[i].images[0] %>"
+            onclick="location.href='/image/<%= productsByGender.boys[i]._id %>';">
             <ul class="product__hover">
+            
+              
               <li>
-                <a href="img/product/product-4.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
+                <a id="" type="button" onclick="addToWishList('<%=productsByGender.boys[i]._id%>');event.stopPropagation();"><span class="icon_heart_alt"></span></a>
+            </li>
             </ul>
           </div>
           <div class="product__item__text">
-            <h6><a href="#">Slim striped pocket shirt</a></h6>
+            <h6><a href="#"><%= productsByGender.boys[i].productName %></a></h6>
             <div class="rating">
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
@@ -173,152 +209,13 @@
               <i class="fa fa-star"></i>
               <i class="fa fa-star"></i>
             </div>
-            <div class="product__price">$ 59.0</div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-4 col-sm-6 mix kid">
-        <div class="product__item">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-5.jpg"
-          >
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-5.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Fit micro corduroy shirt</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 59.0</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
-      >
-        <div class="product__item sale">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-6.jpg"
-          >
-            <div class="label sale">Sale</div>
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-6.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Tropical Kimono</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
-      >
-        <div class="product__item">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-7.jpg"
-          >
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-7.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Contrasting sunglasses</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 59.0</div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="col-lg-3 col-md-4 col-sm-6 mix women men kid accessories cosmetic"
-      >
-        <div class="product__item sale">
-          <div
-            class="product__item__pic set-bg"
-            data-setbg="/user/img/product/product-8.jpg"
-          >
-            <div class="label">Sale</div>
-            <ul class="product__hover">
-              <li>
-                <a href="img/product/product-8.jpg" class="image-popup"
-                  ><span class="arrow_expand"></span
-                ></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_heart_alt"></span></a>
-              </li>
-              <li>
-                <a href="#"><span class="icon_bag_alt"></span></a>
-              </li>
-            </ul>
-          </div>
-          <div class="product__item__text">
-            <h6><a href="#">Water resistant backpack</a></h6>
-            <div class="rating">
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-              <i class="fa fa-star"></i>
-            </div>
-            <div class="product__price">$ 49.0 <span>$ 59.0</span></div>
+            <div class="product__price">Rs.<%= productsByGender.boys[i].salePrice %></div>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <% } %>
 </section>
 <!-- Product Section End -->
 
@@ -332,21 +229,21 @@
             <div class="banner__text">
               <span>The Chloe Collection</span>
               <h1>The Project Jacket</h1>
-              <a href="#">Shop now</a>
+              <a href="/shop">Shop now</a>
             </div>
           </div>
           <div class="banner__item">
             <div class="banner__text">
               <span>The Chloe Collection</span>
               <h1>The Project Jacket</h1>
-              <a href="#">Shop now</a>
+              <a href="/shop">Shop now</a>
             </div>
           </div>
           <div class="banner__item">
             <div class="banner__text">
               <span>The Chloe Collection</span>
               <h1>The Project Jacket</h1>
-              <a href="#">Shop now</a>
+              <a href="/shop">Shop now</a>
             </div>
           </div>
         </div>
@@ -357,11 +254,11 @@
 <!-- Banner Section End -->
 
 <!-- Trend Section Begin -->
-<section class="trend spad">
+<!-- <section class="trend spad">
   <div class="container">
     <div class="row">
       <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="trend__content">
+        <!-- <div class="trend__content">
           <div class="section-title">
             <h4>Hot Trend</h4>
           </div>
@@ -413,10 +310,10 @@
               <div class="product__price">$ 59.0</div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="trend__content">
+        </div> -->
+      <!-- </div>
+      <div class="col-lg-4 col-md-4 col-sm-6"> -->
+        <!-- <div class="trend__content">
           <div class="section-title">
             <h4>Best seller</h4>
           </div>
@@ -468,10 +365,10 @@
               <div class="product__price">$ 59.0</div>
             </div>
           </div>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div>
       <div class="col-lg-4 col-md-4 col-sm-6">
-        <div class="trend__content">
+        <!-- <div class="trend__content">
           <div class="section-title">
             <h4>Feature</h4>
           </div>
@@ -523,15 +420,15 @@
               <div class="product__price">$ 59.0</div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+        </div> -->
+      <!-- </div>
+    </div> -->
+  <!-- </div> -->
+<!-- </section> --> 
 <!-- Trend Section End -->
 
 <!-- Discount Section Begin -->
-<section class="discount">
+<!-- <section class="discount">
   <div class="container">
     <div class="row">
       <div class="col-lg-6 p-0">
@@ -564,12 +461,12 @@
               <p>Sec</p>
             </div>
           </div>
-          <a href="#">Shop now</a>
+          <a href="/shop">Shop now</a>
         </div>
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- Discount Section End -->
 
 <!-- Services Section Begin -->
@@ -683,3 +580,44 @@
   </div>
 </div>
 <!-- Instagram End -->
+<script>
+        function showLoader() {
+             document.getElementById("loader").style.visibility = "visible";
+        }
+
+       function hideLoader() {
+          document.getElementById("loader").style.visibility = "hidden";
+        }
+  function addToWishList(proId){
+    showLoader()
+      $.ajax({
+          url:`/add-to-wishlist/${proId}`,
+          method:'get',
+          success:(response)=>{
+            console.log(response,'rs')
+             if(response.status===true){
+                      let wishListCount=$('#wishlist-count').html()
+                      console.log(wishListCount)
+                      wishListCount = parseInt(wishListCount)+1
+                      console.log(wishListCount)
+                      $("#wishlist-count").html(wishListCount);
+                      hideLoader()
+                      alertify.set('notifier','delay', 2);
+                      alertify.set('notifier','position', 'top-right');
+                      alertify.success('added to wishlist');
+                     
+             }else if(response.status===false){
+              hideLoader()
+              console.log('hieieie')
+              alertify.set('notifier','delay', 2);
+              alertify.set('notifier','position', 'top-right');
+              alertify.error('you have this item in your wishlist');
+              
+             }else if(!response){
+             
+              window.location.href='/login';
+             }
+          }
+      })
+  }
+</script>

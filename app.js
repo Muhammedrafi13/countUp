@@ -13,16 +13,23 @@ const adminRouter = require('./server/routes/admin');
 const multer  = require('multer');
 const session = require('express-session');
 const nocahe = require('nocache');
-
+const jsPDF = require('jspdf');
+const userController = require('./server/controllers/userController');
+// const MongoDBStore = require('connect-mongodb-session')(session);
 
 const app = express();
 
+//session store
+// const mongoDBStore = new MongoDBStore({
+//   uri: process.env.MONGODB_URI,
+//   collection: 'sessions'
+// });
 
-
-
+ 
 app.use(session
    ({secret:"Key",
   resave: false,
+  // store: mongoDBStore,
   saveUninitialized: true,
   cookie:{maxAge:86400000} //24 hours
 }));
@@ -46,6 +53,8 @@ app.use(methodOverride('_method'))
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
+
+app.use(userController.errorPage404);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

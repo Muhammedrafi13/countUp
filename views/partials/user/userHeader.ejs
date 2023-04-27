@@ -1,8 +1,16 @@
+
 <!-- Page Preloder -->
-<!-- <div id="preloder">
+<div id="preloder">
     <div class="loader"></div>
-  </div> -->
-  
+  </div>
+  <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css"
+    />
+  <link
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+      rel="stylesheet"
+    />
   <!-- Offcanvas Menu Begin -->
   <div class="offcanvas-menu-overlay"></div>
   <div class="offcanvas-menu-wrapper">
@@ -10,29 +18,35 @@
     <ul class="offcanvas__widget">
       <li><span class="icon_search search-switch"></span></li>
       <li>
-        <a href="#"
+        <a href="/wishlist"
           ><span class="icon_heart_alt"></span>
-          <div class="tip">2</div>
+          <div class="tip"><%= locals.wishListCount ??"0" %></div>
         </a>
       </li>
       <li>
-        <a href="#"
+        <a href="/cart"
           ><span class="icon_bag_alt"></span>
-          <div class="tip">2</div>
+          <div class="tip"><%= locals.count ?? "0" %></div>
         </a>
       </li>
+
+
     </ul>
     <div class="offcanvas__logo">
-      <a href="./#"><img src="user/img/" alt="Logo here" /></a>
+      <a href="./#"><img src="/images/cv6.png" alt="Logo here" /></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__auth">
-     
-        <% if (locals.user) { %>
+  
+        <!-- <% if (locals.user) { %>
           <a href="/logout"> <%= user.name %> / Logout</a>
         <% } else { %>
           <a href="/login">Login/Register</a>
-       <% } %>
+       <% } %> -->
+
+
+     
+      
     
     </div>
   </div>
@@ -43,62 +57,129 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xl-3 col-lg-2">
-          <div class="header__logo">
-            <a href="#"><img src="user/img/" alt="Logo here" /></a>
+          <div class="header__logo "  >
+            <img src="/images/cv6.png" class="img-fluid"  alt="Logo here" />
+      
           </div>
         </div>
-        <div class="col-xl-6 col-lg-7">
-          <nav class="header__menu">
-            <ul>
+        <div class="col-xl-4 col-lg-5 ">
+          <nav class="header__menu " >
+            <ul >
               <li ><a href="/">Home</a></li>
               <li><a href="/womenCollection">Women</a></li>
               <li><a href="/menCollection">Men</a></li>
               <li><a href="/kidsCollection">Kids</a></li>
          
               <li>
-                <a href="#">Pages</a>
-                <ul class="dropdown">
-                  <li><a href="./product-details.html">Shop</a></li>
-                  <li><a href="./shop-cart.html">Shop Cart</a></li>
-                  <li><a href="./checkout.html">Checkout</a></li>
-                  <li><a href="./blog-details.html">Blog Details</a></li>
-                </ul>
+                <a href="/shop">Shop</a>
+                     
               </li>
+              <li class=" d-lg-none"><a href="#">Profile</a>
+                <ul class="dropdown">
+                  <% if (locals.user) { %>
+               
+              <li><a href="">welcome <%= locals.user.name %></a>  </li>
+              <li><a href="/profile">Profile</a></li>
+              <li><a href="/orders">Orders</a></li>
+              <li><a href="/logout">Logout</a></li>
+                    <% } else { %>
+                      <li><a href="/login">Login/Register</a></li>
+                      <% } %>
+                </ul>
+            </li>
+           
+         
+               
+        
              
-              <li><a href="./contact.html">Contact</a></li>
+              <!-- <li><a href="#">Profile</a>
+              <ul class="dropdown">
+                         <li><a href="/profile">settings</a></li>
+                         <li><a href="/orders">Orders</a></li>
+                         <li><a href="#">Checkout</a></li>
+                         <li><a href="#">Blog Details</a></li> 
+                  </ul>
+             -->
+           
             </ul>
           </nav>
         </div>
-        <div class="col-lg-3">
-          <div class="header__right">
-            <div class="header__right__auth">
-              <% if (locals.user) { %>
-                <a href="/logout"> <%= user.name %> / Logout</a>
-              <% } else { %>
-                <a href="/login">Login/Register</a>
-              <% } %>
-            </div>
-            <ul class="header__right__widget">
-              <li><span class="icon_search search-switch"></span></li>
+        <div class="col-lg-5">
+          <div class="header__right header__menu " style="padding-top: 28px;     margin-right: 20px;">
+
+        
+            <ul class="header__right__widget d-none d-lg-block">
+               <li class="searchStyle">
+                <form class="d-flex input-group w-auto"  action="/shop" method="post">
+                  <input style="height: 30px;"
+                    type="search"
+                    name="search" id="search-input"
+                    class="form-control rounded"
+                    placeholder="Search"
+                    aria-label="Search"
+                    aria-describedby="search-addon"
+                  />
+                  <span style="height: 30px;"  class="input-group-text border-0" id="search-addon">
+                  <button type="submit" style="border:none" class=""><i class="bi bi-search" ></i></button>
+                  </span>
+                 <!--  <span class="icon_search search-switch"></span> -->
+                </form>
+               </li>
+               <li class="" ><svg class="mb-2" xmlns="http://www.w3.org/2000/svg" width="21"  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user align-middle me-1"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></i>
+                <ul class="dropdown ">
+                       <% if (locals.user) { %>
+                          <li><a href="">welcome <%= locals.user.name %></a>  </li>
+                           <li><a href="/profile">Profile</a></li>
+                           <li><a href="/orders">Orders</a></li>
+                           <li><a href="/logout">Logout</a></li>
+                       <% } else { %>
+                            <li><a href="/login">Login/Register</a></li>
+                       <% } %>
+                          
+                    </ul>
+                    </li>
+              
               <li>
-                <a href="#"
-                  ><span class="icon_heart_alt"></span>
-                  <div class="tip">2</div>
+                <a href="/wishlist"><span class="icon_heart_alt"></span>
+                  <div class="tip" id="wishlist-count" ><%= locals.wishListCount ??"0" %></div>
                 </a>
               </li>
               <li>
-                <a href="#"
-                  ><span class="icon_bag_alt"></span>
-                  <div class="tip">2</div>
+        
+                <a href="/cart"><span class="icon_bag_alt"></span>
+                  <div class="tip" id="cart-count"><%= locals.count ??"0" %></div>
                 </a>
+                
               </li>
+         
+    
+                     
+                         
+                 
+              
+              
+              <!-- <li ><a href=""><img class="mb-2 " style="height: 22px; width: 21px; margin-top: -4px;" src="/user/img/user.png"></a>
+              </li> -->
+          
             </ul>
           </div>
         </div>
       </div>
+   
       <div class="canvas__open">
         <i class="fa fa-bars"></i>
       </div>
     </div>
   </header>
   <!-- Header Section End -->
+
+
+
+
+
+
+
+
+
+
+

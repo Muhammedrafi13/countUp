@@ -1680,6 +1680,7 @@ ol {
 .product__details__pic__slider.owl-carousel .owl-nav button.owl-next {
 	left: auto;
 	right: 10px;
+	margin-right:95px;
 }
 
 .product__details__text h3 {
@@ -2521,7 +2522,7 @@ ol {
 
 .checkout__order__widget label input {
 	position: absolute;
-	visibility: hidden;
+	/* visibility: hidden; */
 }
 
 .checkout__order__widget label input:checked~.checkmark {
@@ -3680,3 +3681,13 @@ ol {
 		font-size: 24px;
 	}
 }
+@media (max-width:1070px){
+	.searchStyle{
+		width:230px
+	}
+}
+/* @media (max-width:720){
+	.searchStyle{
+		width:230px
+	}
+} */

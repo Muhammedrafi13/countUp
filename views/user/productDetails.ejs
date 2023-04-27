@@ -1,16 +1,102 @@
+<style>
+    .size__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .size-btn {
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      background-color: #fff;
+      color: #555;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 6px 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .size-btn:hover {
+      background-color: #f2f2f2;
+      border-color: #555;
+    }
+    
+    .size-btn.active {
+      background-color: #fff;
+      color: #555;
+      border-color: #555;
+      border-radius: 20px;
+      box-shadow: 0px 0px 0px 2px #555;
+    }
+  
+        /* #popUpcoupon{
+          visibility:hidden;
+          display:flex
+        } */
+        #loader {
+       visibility: hidden;
+          display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 9999;
+      }
+      
+      #loader > span {
+        display: block;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 5px solid #fff;
+        border-top-color: #000;
+        animation: spin 1s linear infinite;
+      }
+      
+      /* CSS code for the loader animation */
+      @keyframes spin {
+        from {
+          transform: rotate(0);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      
+     
+      
+      
+      </style>
+      <!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-
-
-
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    
+    <div id="loader" >
+        <span ></span>
+</div>
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="#"><i class="fa fa-home"></i> Home</a>
+                        <!-- <a href="/"><i class="fa fa-home"></i> Home</a>
                         <a href="#">Women’s </a>
-                        <span>Essential structured blazer</span>
+                        <span>Essential structured blazer</span> -->
                     </div>
                 </div>
             </div>
@@ -28,28 +114,26 @@
                           
 
                             <a class="pt active" href="#product-1">
-                                <img style="width:50px; height:50px" src="/product-images/<%=productDetails.images[0]%>" alt="Product Image">
+                                <img style="width:50px; height:150px" src="/product-images/<%=productDetails.images[0]%>" alt="Product Image">
 
                             </a>
                             <a class="pt" href="#product-2">
-                                <img style="width:50px; height:50px" src="/product-images/<%=productDetails.images[1]%>" alt="Product Image">
+                                <img style="width:50px; height:150px" src="/product-images/<%=productDetails.images[1]%>" alt="Product Image">
 
                             </a>
                             <a class="pt" href="#product-3">
-                                <img style="width:50px; height:50px" src="/product-images/<%=productDetails.images[2]%>" alt="Product Image">
+                                <img style="width:50px; height:150px" src="/product-images/<%=productDetails.images[2]%>" alt="Product Image">
 
                             </a>
-                            <a class="pt" href="#product-4">
-                                <img style="width:50px; height:50px" src="/product-images/<%=productDetails.images[3]%>" alt="Product Image">
-                            </a>
+
                         </div>
                         <div class="product__details__slider__content">
                             <div class="product__details__pic__slider owl-carousel">
 
-                                <a href="/product-images/<%=productDetails.images[0]%>" class="MagicZoom" data-options="zoomPosition: inner"> <img data-hash="product-1" class="product__big__img" src="/product-images/<%=productDetails.images[0]%>" alt=""></a>
+                                <a  href="/product-images/<%=productDetails.images[0]%>"   class="MagicZoom" data-options="zoomPosition: inner"> <img data-hash="product-1" class="product__big__img" src="/product-images/<%=productDetails.images[0]%>" alt=""></a>
                                 <a href="/product-images/<%=productDetails.images[1]%>" class="MagicZoom" data-options="zoomPosition: inner"> <img data-hash="product-1" class="product__big__img" src="/product-images/<%=productDetails.images[1]%>" alt=""></a>
                                 <a href="/product-images/<%=productDetails.images[2]%>" class="MagicZoom" data-options="zoomPosition: inner"> <img data-hash="product-1" class="product__big__img" src="/product-images/<%=productDetails.images[2]%>" alt=""></a>
-                                <a href="/product-images/<%=productDetails.images[3]%>" class="MagicZoom" data-options="zoomPosition: inner"> <img data-hash="product-1" class="product__big__img" src="/product-images/<%=productDetails.images[3]%>" alt=""></a>
+
 
                             </div>
                         </div>
@@ -57,7 +141,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="product__details__text">
-                        <h3><%= productDetails.productName %><span>Brand: SKMEIMore Men Watches from SKMEI</span></h3>
+                        <h3><%= productDetails.productName %></h3>
                         <div class="rating">
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -66,35 +150,14 @@
                             <i class="fa fa-star"></i>
                             <span>( 138 reviews )</span>
                         </div>
-                        <div class="product__details__price">$ 75.0 <span>$ 83.0</span></div>
-                        <p>Nemo enim ipsam voluptatem quia aspernatur aut odit aut loret fugit, sed quia consequuntur
-                        magni lores eos qui ratione voluptatem sequi nesciunt.</p>
-                        <div class="product__details__button">
-                            <div class="quantity">
-                                <span>Quantity:</span>
-                                <div class="pro-qty">
-                                    <input type="text" value="1">
-                                </div>
-                            </div>
-                            <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
-                            <ul>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
-                            </ul>
-                        </div>
+                        <div class="product__details__price">Rs. <%= productDetails.salePrice %><span>Rs. <%= productDetails.salePrice+100 %></span></div>
+                        <!-- <p>Nemo enim ipsam voluptatem quia aspernatur aut odit aut loret fugit, sed quia consequuntur
+                        magni lores eos qui ratione voluptatem sequi nesciunt.</p> -->
+    
                         <div class="product__details__widget">
                             <ul>
-                                <li>
-                                    <span>Availability:</span>
-                                    <div class="stock__checkbox">
-                                        <label for="stockin">
-                                            In Stock
-                                            <input type="checkbox" id="stockin">
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
+                                
+                                <!-- <li>
                                     <span>Available color:</span>
                                     <div class="color__checkbox">
                                         <label for="red">
@@ -110,37 +173,62 @@
                                             <span class="checkmark grey-bg"></span>
                                         </label>
                                     </div>
-                                </li>
-                                <li>
+                                </li> -->
+                                <!-- <li>
                                     <span>Available size:</span>
                                     <div class="size__btn">
-                                        <label for="xs-btn" class="active">
-                                            <input type="radio" id="xs-btn">
-                                            xs
-                                        </label>
-                                        <label for="s-btn">
-                                            <input type="radio" id="s-btn">
-                                            s
-                                        </label>
-                                        <label for="m-btn">
-                                            <input type="radio" id="m-btn">
-                                            m
-                                        </label>
-                                        <label for="l-btn">
-                                            <input type="radio" id="l-btn">
-                                            l
-                                        </label>
+                                      <label for="s-btn">
+                                        <input type="radio" id="s-btn" name="size">
+                                        <div class="radio-button">S</div>
+                                      </label>
+                                      <label for="m-btn">
+                                        <input type="radio" id="m-btn" name="size">
+                                        <div class="radio-button">M</div>
+                                      </label>
+                                      <label for="l-btn">
+                                        <input type="radio" id="l-btn" name="size">
+                                        <div class="radio-button">L</div>
+                                      </label>
+                                      <label for="xl-btn">
+                                        <input type="radio" id="xl-btn" name="size">
+                                        <div class="radio-button">XL</div>
+                                      </label>
+                                      <label for="xxl-btn">
+                                        <input type="radio" id="xxl-btn" name="size">
+                                        <div class="radio-button">XXL</div>
+                                      </label>
                                     </div>
-                                </li>
-                                <li>
+                                  </li> -->
+                                  <li>
+                                    <span>Available size:</span>
+                                    <div class="size__btn">
+                                      <button id="s-btn" class="size-btn">S</button>
+                                      <button id="m-btn" class="size-btn">M</button>
+                                      <button id="l-btn" class="size-btn">L</button>
+                                      <button id="xl-btn" class="size-btn">XL</button>
+                                      <button id="xxl-btn" class="size-btn">XXL</button>
+                                    </div>
+                                  </li>
+                                  
+    
+                                <!-- <li>
                                     <span>Promotions:</span>
                                     <p>Free shipping</p>
-                                </li>
+                                </li> -->
                             </ul>
+                        </div>
+                        <div class="product__details__button mt-5">
+                            <input type="text" id="hiddenId" value="<%=productDetails._id %>" hidden>
+                             <!-- <span id="hiddenId" hidden><%#= productDetails._id %></span> -->
+                            <button  class="cart-btn" onclick="addToCart('<%= productDetails._id %>')" ><span class="icon_bag_alt"></span> Add to cart</button>
+                            <!-- <a href="/add-to-cart/<%#=productDetails._id %>" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a> -->
+                            <!-- <ul>
+                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            </ul> -->
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-12">
+                <!-- <div class="col-lg-12">
                     <div class="product__details__tab">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
@@ -195,9 +283,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="col-lg-12 text-center">
                     <div class="related__title">
                         <h5>RELATED PRODUCTS</h5>
@@ -205,10 +293,10 @@
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-1.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/user/img/product/related/rp-1.jpg">
                             <div class="label new">New</div>
                             <ul class="product__hover">
-                                <li><a href="img/product/related/rp-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="/user/img/product/related/rp-1.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                             </ul>
@@ -228,9 +316,9 @@
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-2.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/user/img/product/related/rp-2.jpg">
                             <ul class="product__hover">
-                                <li><a href="img/product/related/rp-2.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="/user/img/product/related/rp-2.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                             </ul>
@@ -250,10 +338,10 @@
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-3.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/user/img/product/related/rp-3.jpg">
                             <div class="label stockout">out of stock</div>
                             <ul class="product__hover">
-                                <li><a href="img/product/related/rp-3.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="/user/img/product/related/rp-3.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                             </ul>
@@ -273,9 +361,9 @@
                 </div>
                 <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="img/product/related/rp-4.jpg">
+                        <div class="product__item__pic set-bg" data-setbg="/user/img/product/related/rp-4.jpg">
                             <ul class="product__hover">
-                                <li><a href="img/product/related/rp-4.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                <li><a href="/user/img/product/related/rp-4.jpg" class="image-popup"><span class="arrow_expand"></span></a></li>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                             </ul>
@@ -293,7 +381,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </section>
     <!-- Product Details Section End -->
@@ -303,56 +391,135 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-1.jpg">
+                    <div class="instagram__item set-bg" data-setbg="/user/img/instagram/insta-1.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">@ count_up</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-2.jpg">
+                    <div class="instagram__item set-bg" data-setbg="/user/img/instagram/insta-2.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">@ count_up</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-3.jpg">
+                    <div class="instagram__item set-bg" data-setbg="/user/img/instagram/insta-3.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">@ count_up</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-4.jpg">
+                    <div class="instagram__item set-bg" data-setbg="/user/img/instagram/insta-4.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">@ count_up</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-5.jpg">
+                    <div class="instagram__item set-bg" data-setbg="/user/img/instagram/insta-5.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">@ count_up</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="img/instagram/insta-6.jpg">
+                    <div class="instagram__item set-bg" data-setbg="/user/img/instagram/insta-6.jpg">
                         <div class="instagram__text">
                             <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
+                            <a href="#">@ count_up</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Instagram End -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ 
+    <script>
+        function showLoader() {
+             document.getElementById("loader").style.visibility = "visible";
+        }
 
+       function hideLoader() {
+          document.getElementById("loader").style.visibility = "hidden";
+        }
+
+      $('.size-btn').click(function() {
+        $(this).toggleClass('active').siblings().removeClass('active');
+        const size = $(this).text();
+        console.log(`Selected size: ${size}`);
+      });
+   
+      $(document).ready(function() {
+      $('.size-btn').click(function() {
+        showLoader()
+            var size = $(this).text(); // Get the size from the button's text
+            let proId = document.getElementById('hiddenId').value;
+            console.log(proId,'hidden')
+            $.ajax({
+                url:`/product-size-selector/${size}/?proId=${proId}`,
+                type: 'get',
+                success: (response)=> {
+                  if (response) {
+                    let prev =  $('.cart-btn').html();
+                    $('.cart-btn').html('<span class="icon_bag_alt"></span> Go to cart');
+                    $('.cart-btn').attr('onclick', 'window.location.href="/cart"');
+                    hideLoader()
+                  }else{
+                    $('.cart-btn').html('<span class="icon_bag_alt"></span> Add to cart');
+                    $('.cart-btn').attr('onclick', 'addToCart("'+proId+'")');
+
+                    hideLoader()
+                  }
+                }
+           
+            });
+      });
+     });
     
+               
+        function addToCart(proId){
+              const activeBtn = $('.size-btn.active');
+              const size = $('.size-btn.active').text();
+              if (activeBtn.length > 0) {
+                showLoader()
+                  $.ajax({
+                      url:`/add-to-cart/${proId}/?size=${size}`,
+                      method:'get',
+                      success:(response)=>{
+               
+                          if(response.status){
+                              let count=$('#cart-count').html()
+                              console.log(count)
+                              count = parseInt(count)+1
+                              console.log(count)
+                              $("#cart-count").html(count);
+                              $('.cart-btn').html('<span class="icon_bag_alt"></span> Go to cart');
+                              $('.cart-btn').attr('onclick', 'window.location.href="/cart"');
+                              hideLoader()
+                              alertify.set('notifier','delay', 2);
+                              alertify.set('notifier','position', 'top-right');
+                              alertify.success('added to cart');
+                             
+                           
+                          }
+                      }
+                  })
+              } else {
+                swal("", "Please select size", "error");
+              }
+         }
+
+
+
+    </script>

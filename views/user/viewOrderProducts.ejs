@@ -1,0 +1,24 @@
+<section>
+    <div class="container mt-5">
+        <div class="row">
+         <% orderItems.forEach(element => { %>
+    
+       
+            <div class="col-md-3 p-3">
+                <div class="card" style="width:15rem; height:24rem">
+                    <img src="/product-images/<%= element.productInfo.images[0] %>" style="height:12rem" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title">Name:<%= element.productInfo.productName %></h4>
+                        <h4 class="card-text">Price:<%= element.productInfo.salePrice %></h4>
+                        <h4 class="card-text">Quantitiy:<%= element.quantity %></h4>
+                     
+                    </div>
+                </div>
+           
+            </div>
+           
+            <% }) %>
+             
+        </div>
+    </div>
+</section>

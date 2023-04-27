@@ -34,6 +34,9 @@ exports.postOtp = async (req, res) => {
             req.session.tempUser = null;
             req.session.user.loggedIn = true;
             console.log("Verified"); // if the otp matches sending data
+           
+            await User.deleteMany({ email: userEmail, status: false });
+
             res.redirect("/")
         } else {
             res.render("user/otpPage", { message: "you have enterd the wrong otp" }) //if the otp doesnt match sending message

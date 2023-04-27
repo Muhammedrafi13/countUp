@@ -6,10 +6,11 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="#"><img src="/user/img/" alt="Logo here"></a>
+                        <div class="header__logo " style="height:40px" >
+                            <img src="/images/cv6.png" style="height:40px"  alt="Logo here" />
+                          </div>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    cilisis.</p>
+                    <p class="mt-4">Count up, The perfect outfit</p>
                     <div class="footer__payment">
                         <a href="#"><img src="/user/img/payment/payment-1.png" alt=""></a>
                         <a href="#"><img src="/user/img/payment/payment-2.png" alt=""></a>
@@ -34,19 +35,19 @@
                 <div class="footer__widget">
                     <h6>Account</h6>
                     <ul>
-                        <li><a href="#">My Account</a></li>
-                        <li><a href="#">Orders Tracking</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Wishlist</a></li>
+                        <li><a href="/profile">My Account</a></li>
+                        <li><a href="/orders">Orders</a></li>
+                        <li><a href="/cart">cart</a></li>
+                        <li><a href="/wishlist">Wishlist</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-4 col-md-8 col-sm-8">
                 <div class="footer__newslatter">
                     <h6>NEWSLETTER</h6>
-                    <form action="#">
+                    <form action="">
                         <input type="text" placeholder="Email">
-                        <button type="submit" class="site-btn">Subscribe</button>
+                        <button type="button" class="site-btn">Subscribe</button>
                     </form>
                     <div class="footer__social">
                         <a href="#"><i class="fa fa-facebook"></i></a>
@@ -62,7 +63,7 @@
             <div class="col-lg-12">
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 <div class="footer__copyright__text">
-                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved |   <a href="/" target="_blank">CountUp</a></p>
                 </div>
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
             </div>
@@ -75,8 +76,10 @@
 <div class="search-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
+        <form class="search-model-form" action="/shop" method="post">
+            <input type="text" name="search" id="search-input" placeholder="">
+            <button class="btn btn-success" type="submit">search</button>
+            <span class="ti-close" id="close_search" title="close search"></span>
         </form>
     </div>
 </div>

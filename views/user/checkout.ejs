@@ -1,0 +1,612 @@
+<!-- Breadcrumb Begin -->
+<%- include('../partials/user/userHead') %>
+
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+    </head>
+    <style>
+
+
+        #loader {
+            visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        #loader>span {
+            display: block;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 5px solid #fff;
+            border-top-color: #000;
+            animation: spin 1s linear infinite;
+        }
+
+        /* CSS code for the loader animation */
+        @keyframes spin {
+            from {
+                transform: rotate(0);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <div id="loader">
+        <span></span>
+    </div>
+    <div class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__links">
+                        <a href="/cart"><i class="fa fa-home"></i> cart</a>
+                        <span>Shopping cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="container-fluid p-0">
+                <div class="row">
+
+                    <div class="col-lg-8">
+
+                        <div class="card " id="card-address">
+                            <div class="card-header">
+
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-secondary" id="toggleAddressBtn">+ Add new Address</button>
+
+                                </div>
+
+                            </div>
+                            <div hidden>
+                                <span  id="addressPrOrNot"><%=hasAddress%></span>
+                            </div>
+                            <!-- if condition was here -->
+                            <div class="card-body" id="noAddress" style="display:none">
+                                <form action="#" id="address-form">
+                                    <div class="mb-3">
+                                        <label class="form-label" for="inputEmail4">Name*</label>
+                                        <input type="text" class="form-control" name="name" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="inputEmail4">Mobile*</label>
+                                        <input type="text" class="form-control" name="mobile" placeholder="">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label" for="inputAddress">Address (House No, Building,
+                                            Street, Area)*</label>
+                                        <input type="text" class="form-control" name="addressDetails" placeholder="">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="mb-3 col-md-6">
+                                            <label class="form-label" for="inputCity">City*</label>
+                                            <input type="text" class="form-control" name="city">
+                                        </div>
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label" for="inputState">State*</label>
+                                            <input type="text" class="form-control" name="state">
+                                        </div>
+                                        <div class="mb-3 col-md-2">
+                                            <label class="form-label" for="inputZip">Zip*</label>
+                                            <input type="text" class="form-control" name="zip">
+                                        </div>
+                                        <div class="mb-3 col-md-4">
+                                            <label class="form-label" for="type">Type of address?*</label>
+                                            <div>
+                                                <label class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" checked name="typeOfAddress"
+                                                        value="Home">
+                                                    <span class="form-check-label">
+                                                        Home
+                                                    </span>
+                                                </label>
+                                                
+                                                <label class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="radio" name="typeOfAddress"
+                                                        value="Office">
+                                                    <span class="form-check-label">
+                                                        Office
+                                                    </span>
+                                                </label>
+                                            </div>
+                                           
+                                        </div>
+
+                                    </div>
+                                    <input type="text" name="userId" value="<%= user._id %>" hidden>
+                                    <button type="submit" id="save-button-address" class="btn btn-primary">Save</button>
+
+                                </form>
+
+                            </div>
+                            <!-- closing if -->
+
+                        </div>
+
+
+
+                        <div class="" id="LoopAndLiveAddress">
+                            <form action="#" class="checkout__form" id="checkout-form">
+                                <% deliveryAddress.address.forEach(element=> { %>
+
+                                    <div class="card border-info mb-3 mt-2">
+
+                                        <div class="card-body">
+
+                                            <div class="card-title" class="ml-3"></div>
+
+
+                                            <label class="form-check">
+                                                <input class="form-check-input" type="radio" id='deliverAddress'
+                                                    value="<%= element._id %>" name="deliverAddressId">
+                                                <span class="form-check-label">
+                                                    <%= element.typeOfAddress%>
+                                                </span>
+                                            </label>
+
+                                            <div class="mb-3 ml-3 ">
+                                                <span>
+                                                    <%= element.name %>
+                                                </span>
+                                            </div>
+
+                                            <div class="mb-3 ml-3 ">
+                                                <%= element.addressDetails%>
+                                                    <%= element.zip %>
+                                            </div>
+                                            <div class="mb-3 ml-3 ">
+                                                <span>Mobile:</span>
+                                                <span class="font-weight-bold">
+                                                    <%= element.mobile %>
+                                                </span>
+                                            </div>
+                                            <div class="mb-3 ml-3 ">
+                                                <span>
+                                                    <%= element.city %>
+                                                </span>
+                                                <span>
+                                                    <%= element.state %>
+                                                </span>
+                                            </div>
+
+                                            <!-- <div class="mb-3 ml-3 ">
+                            <button  class="btn btn-danger">Remove</button>
+                            <button  class="btn btn-primary">Edit</button>
+                          </div> -->
+
+                                        </div>
+                                    </div>
+
+                                    <% }) %>
+
+                                        <div id="forLiveAddress">
+                                            <!-- for getting the response of ajax -->
+                                        </div>
+
+                        </div>
+
+
+                        <!-- <div class="card-body">
+                           
+                           
+                         
+                        </div> -->
+
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <!-- form -->
+                            <div class="checkout__order">
+                                <h5 class="font-weight-bold">Your order</h5>
+                                <div class="checkout__order__product">
+                                    <ul>
+                                        <li><span class="top__text">Product</span>
+                                            <span class="top__text__right">Total</span>
+                                        </li>
+                                        <% cartItems.forEach((element,index)=> { %>
+
+                                            <li>
+                                                <%= index+1 %> .
+                                                    <%= element.productInfo.productName %>
+                                                        <span>Rs. <%=element.productInfo.salePrice * element.quantity %>
+                                                        </span>
+                                            </li>
+
+                                            <% }) %>
+
+                                    </ul>
+                                </div>
+                                <div class="checkout__order__total">
+                                    <ul>
+                                        <li>Sub Total <span>Rs. <%= locals.total %></span></li>
+                                        <% if (locals.couponDis) { %>
+                                            <li>Coupon Discoiunt <span>Rs. <%= locals.couponDis %></span></li>
+                                            <% } %>
+
+                                                <li>Tax Amount <span>Rs. <%= locals.tax %></span></li>
+                                                <li>Total Amount <span>Rs. <%= locals.couponDis ? (locals.totalWithTax -
+                                                            locals.couponDis) : locals.totalWithTax %> </span></li>
+                                    </ul>
+                                </div>
+                                <div class="checkout__order__widget ">
+
+
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" value="COD" name="payment-method">
+                                        <span class="form-check-label">
+                                            Cash on Delivery
+                                        </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" value="RazorPay"
+                                            name="payment-method">
+                                        <span class="form-check-label">
+                                            RazorPay
+                                        </span>
+                                    </label>
+                                    <label class="form-check">
+                                        <input class="form-check-input" type="radio" value="PayPal"
+                                            name="payment-method">
+                                        <span class="form-check-label">
+                                            PayPal
+                                        </span>
+                                    </label>
+
+                                    <input type="text" name="userId" value="<%= user._id %>" hidden>
+                                    <input type="text" name="tax" value="<%= locals.tax %>" hidden>
+                                    <% if (locals.couponDis) { %>
+                                        <input type="text" name="coupon" value="<%= locals.couponDis %>" hidden>
+                                        <% } %>
+                                            <input type="text" name="totalPrice"
+                                                value="<%= locals.couponDis ? (locals.totalWithTax - locals.couponDis) : locals.totalWithTax %>"
+                                                hidden>
+                                </div>
+
+                                <button type="submit" class="site-btn">Place order</button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- <script src="/user/js/jquery-3.3.1.min.js"></script> -->
+
+    <script>
+        function showLoader() {
+            document.getElementById("loader").style.visibility = "visible";
+        }
+
+        function hideLoader() {
+            document.getElementById("loader").style.visibility = "hidden";
+        }
+
+    
+
+        $(document).ready(function () {
+
+            $("#toggleAddressBtn").click(function () {
+                $("#noAddress").toggle();
+            });
+        });
+
+        $(document).ready(function () {
+            // Your code here    
+             let res = document.getElementById('addressPrOrNot').innerHTML
+            console.log(res, 'val of res')
+            if (res === "false") {
+               console.log(res, 'tre')
+               $("#noAddress").show();
+            }
+
+            $.validator.addMethod(
+                "isNumber",
+                function (value, element) {
+                    return this.optional(element) || (!isNaN(Number(value)) && /\S/.test(value));
+                },
+                "Please enter a valid zip code"
+            );
+            $.validator.addMethod(
+                "noSpecialChars",
+                function (value, element) {
+                    return this.optional(element) || /^(?!\s)[a-zA-Z ]+$/.test(value);
+                },
+                "Special characters and spaces are not allowed"
+            );
+            $.validator.addMethod(
+                "email",
+                function (value, element) {
+                    return (
+                        this.optional(element) ||
+                        /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/.test(
+                            value
+                        )
+                    );
+                },
+                "Special characters and spaces are not allowed"
+            );
+
+            $.validator.addMethod(
+                "phoneIN",
+                function (phone_number, element) {
+                    return this.optional(element) || phone_number.match(/^(\+91[\-\s]?)?[6-9]\d{2}[\-\s]?\d{3}[\-\s]?\d{4}$/);
+                },
+                "Please enter a valid phone number"
+            );
+
+            $("#address-form").validate({
+                rules: {
+                    // define validation rules for each field
+                    name: {
+                        required: true,
+                        minlength: 3,
+                        noSpecialChars: true,
+                    },
+                    mobile: {
+                        required: true,
+                        minlength: 10,
+                        phoneIN: true,
+                    },
+                    addressDetails: {
+                        required: true,
+                        noSpecialChars: true,
+                    },
+                    city: {
+                        required: true,
+                        noSpecialChars: true,
+                    },
+                    state: {
+                        required: true,
+                        noSpecialChars: true,
+                    },
+                    zip: {
+                        required: true,
+                        isNumber:true,
+                        
+                    },
+                
+
+                },
+                messages: {
+                    // define error messages for each validation rule
+                    name: {
+                        required: "Please enter your full name",
+                        minlength: "Your name must be at least 3 characters long",
+                        noSpecialChars: "Special characters are not allowed",
+                    },
+                    mobile: {
+                        required: "Please enter your phone number",
+                        minlength: "Your Phone number should be 10 digit",
+                    },
+                    addressDetails: {
+                        required: "Please enter your address details",
+                    },
+                    city: {
+                        required: "Please enter your city",
+                    },
+                    state: {
+                        required: "Please enter your state",
+                    },
+                    zip: {
+                        required: "enter zip code",
+                    },
+                     
+
+                },
+                // handle validation errors
+                highlight: function (element) {
+                    $(element).closest(".form-control").addClass("is-invalid");
+                },
+                unhighlight: function (element) {
+                    $(element).closest(".form-control").removeClass("is-invalid");
+                },
+                errorElement: "div",
+                errorClass: "invalid-feedback",
+                errorPlacement: function (error, element) {
+                    if (element.parent(".input-group").length) {
+                        error.insertAfter(element.parent());
+                    } else {
+                        error.insertAfter(element);
+                    }
+                },
+                // handle form submission on valid input
+                submitHandler: function (form) {
+                    // submit form data through AJAX
+                    $.ajax({
+                        url: "/delivery-address",
+                        method: "post",
+                        data: $(form).serialize(),
+                        success: function (currentAddress) {
+                            $("#address-form").trigger("reset");
+                            $("#noAddress").hide();
+
+                            console.log(currentAddress, 'first value')
+                            let l = currentAddress.address.length
+                            console.log(l, 'length')
+                            const value = currentAddress.address[l - 1];
+                            const addressRes = ` <div class="card border-info mb-3 mt-2">
+                        
+                        <div class="card-body">
+                           
+                            <div class="card-title" class="ml-3"></div>
+                       
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio"  value="${value._id}" name="deliverAddressId">
+                                <span class="form-check-label">
+                                 
+                                    ${value.typeOfAddress}
+                                </span>
+                            </label>
+                            
+                            <div class="mb-3 ml-3 " >
+                              <span>${value.name}</span> 
+                              </div>
+                          
+                          <div class="mb-3 ml-3 ">
+                         
+                            ${value.addressDetails}
+                            ${value.zip}
+                   
+                           </div>
+                           <div class="mb-3 ml-3 ">
+                          <span>Mobile:</span>
+                          <span class="font-weight-bold">${value.mobile}</span>
+                        </div>
+                          <div class="mb-3 ml-3 ">
+                            <span> ${value.city}</span>
+                            <span> ${value.state}</span>
+                          </div>
+
+                        
+                         
+                        </div>
+                      </div>
+                    `;
+                            $('#forLiveAddress').append(addressRes);
+                            hideLoader()
+                        },
+                    });
+                },
+            });
+        });
+
+        $("#checkout-form").submit((e) => {
+            e.preventDefault()
+
+
+            if (!$("input[name='deliverAddressId']:checked").val()) {
+                // show validation swal
+                swal("", "Please select an address", "error");
+                return false;
+            } else if (!$("input[name='payment-method']:checked").val()) {
+                // show validation swal
+                swal("", "Please select an payment method", "error");
+                return false;
+            }
+
+
+
+            showLoader()
+
+
+            $.ajax({
+                url: '/place-order',
+                method: 'post',
+                data: $('#checkout-form').serialize(),
+                success: (response) => {
+
+                    if (response.codSuccess) {
+                        hideLoader()
+                        location.href = '/order-success'
+                    }
+                    else if (response.payment) {
+                        hideLoader()
+                        console.log(response.payment, 'payment payapal');
+                        window.location.href = response.payment.links[1].href
+
+                    } else {
+                        hideLoader()
+                        razorpayPayment(response)
+                    }
+                }
+
+            })
+
+        })
+        function razorpayPayment(order) {
+
+            var options = {
+
+                "key": "rzp_test_yLCmjZvBMZ1a0O", // Enter the Key ID generated from the Dashboard
+                "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "currency": "INR",
+                "name": "Count Up",
+                "description": "Test Transaction",
+                "image": "/images/cv6.png",
+                "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                "handler": function (response) {
+                    //    alert(response.razorpay_payment_id);
+                    //    alert(response.razorpay_order_id);
+                    //    alert(response.razorpay_signature)
+                    verifyPayment(response, order)
+                },
+                "prefill": {
+                    "name": "Gaurav Kumar",
+                    "email": "gaurav.kumar@example.com",
+                    "contact": "9000090000"
+                },
+                "notes": {
+                    "address": "Razorpay Corporate Office"
+                },
+                "theme": {
+                    "color": "#243247"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', function (response) {
+                //  alert(response.error.code);
+                //  alert(response.error.description);
+                //  alert(response.error.source);
+                //  alert(response.error.step);
+                //  alert(response.error.reason);
+                //  alert(response.error.metadata.order_id);
+                //  alert(response.error.metadata.payment_id);
+                verifyPayment(response, order)
+            });
+
+            rzp1.open();
+
+        }
+
+
+        function verifyPayment(payment, order) {
+            console.log('inside payment')
+            showLoader()
+            $.ajax({
+                url: '/verify-payment',
+                data: {
+                    payment,
+                    order
+                },
+                method: 'post',
+                success: (response) => {
+                    if (response.status) {
+                        hideLoader()
+                        location.href = '/order-success'
+                    } else {
+                        // alert("payment failed")
+                        hideLoader()
+                        location.href = '/payment-failed'
+                    }
+                }
+            })
+        }
+    </script>

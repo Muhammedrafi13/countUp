@@ -1,4 +1,57 @@
+<style>
+    #loader {
+      visibility: hidden;
+         display: flex;
+       justify-content: center;
+       align-items: center;
+       position: fixed;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, 0.5);
+       z-index: 9999;
+     }
+     
+     #loader > span {
+       display: block;
+       width: 50px;
+       height: 50px;
+       border-radius: 50%;
+       border: 5px solid #fff;
+       border-top-color: #000;
+       animation: spin 1s linear infinite;
+     }
+     
+     /* CSS code for the loader animation */
+     @keyframes spin {
+       from {
+         transform: rotate(0);
+       }
+       to {
+         transform: rotate(360deg);
+       }
+     }
+     
+    
+</style>
 
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+
+<div id="loader" >
+ <span ></span>
+</div>
 
 <section class="product spad">
     <div class="container">
@@ -10,10 +63,10 @@
             </div>
             <div class="col-lg-8 col-md-8">
                 <ul class="filter__controls">
-                    <li  data-filter="*">All</li>
+                    <!-- <li  data-filter="*">All</li>
                     <li class="active" data-filter=".women">Women</li>
                     <li data-filter=".men">Men</li>
-                    <li data-filter=".kid">Kids</li>
+                    <li data-filter=".kid">Kids</li> -->
                 </ul>
             </div>
         </div>
@@ -22,20 +75,15 @@
             <div class="col-lg-3 col-md-4 col-sm-6 mix men">
                 <div class="product__item">
                   
-                    <div class="product__item__pic set-bg"  data-setbg="/product-images/<%= element.images[2] %>" onclick="location.href='/image/<%= element._id %>';">
+                    <div class="product__item__pic set-bg"  data-setbg="/product-images/<%= element.images[0] %>" onclick="location.href='/image/<%= element._id %>';">
                        
                         <div class="label new">New</div>
                         <ul class="product__hover">
+                      
                             <li>
-                                <a href="img/product/product-177.jpg" class="image-popup"><span
-                                        class="arrow_expand"></span></a>
+                                <a id="" type="button" onclick="addToWishList('<%=element._id%>');event.stopPropagation();"><span class="icon_heart_alt"></span></a>
                             </li>
-                            <li>
-                                <a href="#"><span class="icon_heart_alt"></span></a>
-                            </li>
-                            <li>
-                                <a href="#"><span class="icon_bag_alt"></span></a>
-                            </li>
+               
                         </ul>
                     </div>
             
@@ -63,7 +111,7 @@
 
 
 
-
+    </section>
 
 
 
@@ -126,3 +174,40 @@
 <!-- Instagram End -->
 
 
+<script>
+        function showLoader() {
+             document.getElementById("loader").style.visibility = "visible";
+        }
+
+       function hideLoader() {
+          document.getElementById("loader").style.visibility = "hidden";
+        }
+
+    function addToWishList(proId){
+        showLoader()
+        $.ajax({
+            url:`/add-to-wishlist/${proId}`,
+            method:'get',
+            success:(response)=>{
+               if(response.status){
+                        let wishListCount=$('#wishlist-count').html()
+                        console.log(wishListCount)
+                        wishListCount = parseInt(wishListCount)+1
+                        console.log(wishListCount)
+                        $("#wishlist-count").html(wishListCount);
+                        hideLoader();
+                        alertify.set('notifier','delay', 2);
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success('added to the wishlist');
+              
+               }else{
+                hideLoader();
+                alertify.set('notifier','delay', 2);
+                alertify.set('notifier','position', 'top-right');
+                alertify.error('you have this item in your wishlist');
+               }
+               
+            }
+        })
+    }
+</script>

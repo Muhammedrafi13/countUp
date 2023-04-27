@@ -14,6 +14,18 @@ const userSchema =new Schema({
         type: String,
         required: true
     },
+    address :[
+        
+       { 
+        name: String,
+        mobile: String,
+        addressDetails: String,
+        city:String,
+        state:String,
+        zip:Number,
+        typeOfAddress:String
+        }
+    ],
     password :{
         type: String,
         required: true
@@ -26,6 +38,16 @@ const userSchema =new Schema({
         type: Boolean,
         required:true
     },
+    appliedCoupon:[
+        {applied:String,
+        coupondis:Number,
+        minPurchase:Number,
+        status:Boolean
+        }
+
+    ],
+
+
 },
 {
     timestamps:true

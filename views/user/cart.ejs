@@ -1,0 +1,550 @@
+<!-- Breadcrumb Begin -->
+<!-- 
+<style>
+  .loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid blue;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+</style> -->
+
+<%- include('../partials/user/userHead') %>
+<style>
+  /* #popUpcoupon{
+    visibility:hidden;
+    display:flex
+  } */
+  #loader {
+ visibility: hidden;
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+}
+
+#loader > span {
+  display: block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-top-color: #000;
+  animation: spin 1s linear infinite;
+}
+
+/* CSS code for the loader animation */
+@keyframes spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.discount__content {
+  visibility: visible;
+}
+
+.popUpcoupon {
+  display: none;
+}
+
+.discount__content.hidden {
+  visibility: hidden;
+}
+
+.popUpcoupon.visible {
+  display: block;
+}
+
+
+</style>
+
+<!-- JavaScript -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+<!-- CSS -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+<!-- Semantic UI theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+<!-- Bootstrap theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+
+
+
+ <div id="loader" >
+         <span ></span>
+ </div>
+<div class="breadcrumb-option">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="breadcrumb__links">
+          <a href="/"><i class="fa fa-home"></i> Home</a>
+          <span>Shopping cart</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Breadcrumb End -->
+
+<!-- Shop Cart Section Begin -->
+<section class="shop-cart spad">
+
+  <div class="container">
+    <% if (locals.cartItems && Array.isArray(locals.cartItems) && locals.cartItems.length > 0) { %>
+
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="shop__cart__table">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody  id="content">
+             
+              <% cartItems.forEach(element => { %>
+
+
+
+
+              <tr></tr>
+              <tr data-product-id="<%= element.unique_id %>">
+                <td class="cart__product__item">
+                  <img
+                    src="/product-images/<%= element.productInfo.images[2] %>"
+                    style="height: 100px; width: 100px"
+                    alt=""
+                  />
+                  <div class="cart__product__item__title">
+                    <h6><%=element.productInfo.productName%></h6>
+                    <div>  <h6><span>size:</span> <%=element.size%></h6></div>
+                   
+                    
+                    <div class="rating">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                    </div>
+                  </div>
+                </td>
+                <td class="cart__price" id="price">
+                  <%=element.productInfo.salePrice%>
+                </td>
+                <td class="cart__quantity">
+                  <button
+                    class="cart-item-count mr-3 btn"
+                    onclick="changeQuantity('<%= element._id %>','<%=element.unique_id%>','<%= user._id %>',-1,'<%= element.productInfo.salePrice%>')"
+                  >
+                    -
+                  </button>
+                  <span id="<%=element.unique_id %>"
+                    ><%=element.quantity %></span
+                  >
+                  <button
+                    class="cart-item-count ml-3 btn"
+                    onclick="changeQuantity('<%= element._id %>','<%=element.unique_id%>','<%= user._id %>',1,'<%= element.productInfo.salePrice%>')"
+                  >
+                    +
+                  </button>
+                </td>
+                <td class="cart__total">
+                  <span id="subtotal-<%=element.unique_id %>"
+                    >RS. <%= element.productInfo.salePrice * element.quantity
+                    %></span
+                  >
+                </td>
+                <td class="cart__close">
+                  <button
+                    class="icon_close btn"
+                    onclick="rmProCart('<%= element._id %>','<%=element.unique_id%>','<%= user._id %>')"
+                  ></button>
+                </td>
+              </tr>
+        
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6">
+        <div class="cart__btn">
+          <a href="/">Continue Shopping</a>
+        </div>
+      </div>
+      <!-- <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="cart__btn update__btn">
+                    <a href="#"><span class="icon_loading"></span> Update cart</a>
+                </div>
+            </div> -->
+    </div>
+    <div class="row">
+      <div class="col-lg-6">
+      
+        
+        <div  id="inputForCoupon"   class="discount__content <%= locals.couponApplied ? 'hidden' : '' %>">
+          
+              <h6>Discount codes</h6>
+              <input type="text" value="" id="couponId" placeholder="Enter your coupon code"/>
+              <button type="submit" id="couponbtn" onclick="applyCoupon()" class="site-btn">Apply</button>
+              <p><span id="message"></span></p> 
+
+
+        </div>
+      
+     
+        <div  id="popUpcoupon"  class="popUpcoupon <%= locals.couponApplied ? 'visible' : '' %>">
+    
+            <h6>coupon is applied </h6>
+            <button onclick="removeCoupon()" type="button" class="btn btn-info">Remove</button>
+            <p><span id="message"></span></p> 
+
+        </div>
+ 
+   
+     
+      </div>
+      <div class="col-lg-4 offset-lg-2">
+        <div class="cart__total__procced">
+          <h6 class="text-center">Cart total</h6>
+          <ul>
+      
+            <li>SubTotal Rs.<span id="totalPrice"><%= locals.subtotal %></span></li>
+
+            <% if (locals.couponApplied) { %>
+
+              <li id="couponToggle" >Coupon Discount <span id="couponDiscount"><%= locals.couponApplied.discount %></span></li>
+            <% }else{%>
+              <li id="couponToggle">Coupon Discount <span id="couponDiscount">Apply coupon</span></li>
+              <% } %>
+           
+            <li>Tax Amount <span id="adTax"><%= locals.tax %></span></li>
+
+            <% if (locals.couponApplied) { %>
+              <li>Total Amount Rs. <span id="taxWithTotal"><%= locals.totalWithTax - locals.couponApplied.discount %></span></li>
+            <% } else {%>
+              <li>Total Amount Rs. <span id="taxWithTotal"><%= locals.totalWithTax %></span></li>
+              <%} %>
+
+          </ul>
+
+          <a href="/checkout" class="primary-btn"
+            >Proceed to checkout</a
+          >
+        </div>
+      </div>
+    </div>
+    
+   <% } else { %>
+    
+    <div class="d-flex justify-content-center align-items-center  ">
+        
+      <div class="row justify-content-center align-items-center py-5">
+        <div class="col-md-12 col-lg-12 text-center">
+          <h4>Your cart is Empty</h4>
+          <p class="mb-4">Add some products to your cart</p>
+          <button class="btn btn-primary" onclick="window.location.href='/';">Add Products</button>
+        </div>
+      </div>
+
+     </div>
+
+     <% } %>
+
+  </div>
+  
+</section>
+
+
+<!-- Shop Cart Section End -->
+<%- include('../partials/user/userScript') %>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  // JavaScript code to show/hide the loader
+function showLoader() {
+  document.getElementById("loader").style.visibility = "visible";
+}
+
+function hideLoader() {
+  document.getElementById("loader").style.visibility = "hidden";
+}
+
+//   function showAlertWithDelay() {
+//   // show the alert with a timer of 2 seconds
+//   swal({
+//     title: "Done",
+//     text: " ",
+//     icon: "success",
+//     timer: 2000,
+//     buttons: false,
+//     allowOutsideClick: false,
+//   });
+// }
+// setTimeout(showAlertWithDelay, 3000);
+// call the function to show the alert after a delay of 3 seconds
+// const spinner = document.querySelector('.loading-spinner');
+
+
+
+  function changeQuantity(cartId,proId,userId,count,salePrice){
+
+    console.log(userId)
+    let quantity=document.getElementById(proId).innerHTML
+    quantity = parseInt(document.getElementById(proId).innerHTML);
+    count = parseInt(count)
+   
+    showLoader()
+   
+    
+ 
+   $.ajax({
+    url:'/change-product-quantity',
+    data:{
+        cart:cartId,
+        product:proId,
+        user:userId,
+        count:count,
+        quantity:quantity
+    },
+    method: 'post' ,
+  
+    success:(response)=>{
+       if(response.removeProduct){
+        console.log('hihihdfiasdhfoasjdfaskdf')
+        $('tr[data-product-id="' + proId + '"]').remove();
+        
+        document.getElementById('totalPrice').innerHTML = response.subtotal ;
+        document.getElementById('adTax').innerHTML =response.tax;
+        document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+        
+           
+        let ele = document.getElementById('couponDiscount').innerHTML 
+             console.log(typeof(ele),'elee') 
+                   if (!isNaN(ele)) {
+                       ele = parseInt(ele);
+                       console.log(typeof(ele),'elee') 
+                       if(response.couponApplied){
+                        document.getElementById('taxWithTotal').innerHTML =parseInt(response.totalWithTax-ele);
+                       }else{
+                        document.getElementById("inputForCoupon").style.visibility="visible";
+                    document.getElementById("popUpcoupon").style.display="none";
+                    document.getElementById("couponDiscount").innerHTML ='Apply coupon'
+                 
+                        document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+                       }
+                      
+                  } else {
+                    document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+                  }
+                        alertify.set('notifier','delay', 2);
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.error('item removed');        
+          hideLoader();
+       }else{
+
+        console.log(response)
+       
+      
+          
+  // Code to process the Ajax request goes here
+             let abc= document.getElementById(proId).innerHTML = parseInt(response.quantity) ;
+             document.getElementById('subtotal-' + proId).innerHTML = 'Rs. ' + abc*salePrice;
+
+
+             document.getElementById('totalPrice').innerHTML = response.subtotal ;
+             document.getElementById('adTax').innerHTML =response.tax;
+           
+
+        
+        
+           
+          
+             let ele = document.getElementById('couponDiscount').innerHTML 
+             console.log(typeof(ele),'elee') 
+
+
+                   if (!isNaN(ele)) {
+                       ele = parseInt(ele);
+                       console.log(typeof(ele),'elee') 
+                       if(response.couponApplied){
+                        console.log(response.couponApplied)
+                        document.getElementById('taxWithTotal').innerHTML =parseInt(response.totalWithTax-ele);
+                    
+                       }else{
+                        document.getElementById("inputForCoupon").style.visibility="visible";
+                        document.getElementById("popUpcoupon").style.display="none";
+                        document.getElementById("couponDiscount").innerHTML ='Apply coupon'
+                  
+                        document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+                       }
+                      
+                  } else {
+                    document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+                  }
+           hideLoader();
+           
+             
+       }
+
+       }
+    })
+  }
+
+function rmProCart(cartId,proId,userId){
+  showLoader()
+  $.ajax({
+    url:'/remove-product-cart',
+    data:{
+        cart:cartId,
+        product:proId,
+        user:userId
+    },
+    method:'post',
+    success:(response)=>{
+
+       $('tr[data-product-id="' + proId + '"]').remove();
+
+
+       document.getElementById('totalPrice').innerHTML = response.subtotal ;
+       document.getElementById('adTax').innerHTML =response.tax;
+       document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+
+
+     
+     
+       let ele = document.getElementById('couponDiscount').innerHTML 
+             console.log(typeof(ele),'elee') 
+
+
+                   if (!isNaN(ele)) {
+                    ele = parseInt(ele);
+                       console.log(typeof(ele),'elee') 
+                       if(response.couponApplied){
+                        document.getElementById('taxWithTotal').innerHTML =parseInt(response.totalWithTax-ele);
+                       }else{
+                        document.getElementById("inputForCoupon").style.visibility="visible";
+                        document.getElementById("popUpcoupon").style.display="none";
+                        document.getElementById("couponDiscount").innerHTML ='Apply coupon'
+                  
+                        document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+                       }
+                  } else {
+                    document.getElementById('taxWithTotal').innerHTML=response.totalWithTax;
+               
+                  }
+                       alertify.set('notifier','delay', 2);
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.error('item removed');
+          hideLoader();
+    }
+
+  })
+}
+   function applyCoupon(){
+    showLoader()
+      let couponId = document.getElementById('couponId').value;
+      let total= document.getElementById('taxWithTotal').innerHTML;
+
+      console.log(total,'....')
+      console.log(couponId,'iddddddd')
+
+   
+      if(couponId.trim().length === 0){
+          document.getElementById("message").innerHTML = "Enter coupon code";
+          hideLoader();
+      } else{
+        
+          $.ajax({
+          url:'/apply-coupon',
+          data:{
+              couponId: couponId,
+              total:total
+
+          },
+          method:'post',
+          success:(response)=>{
+              console.log(response)
+             if(response.message){
+               document.getElementById("message").innerHTML = response.message;
+                        alertify.set('notifier','delay', 2);
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.error('invalid coupon');
+                      
+              //  document.getElementById("taxWithTotal").innerHTML = total;
+               hideLoader();
+             }else{
+                    document.getElementById("inputForCoupon").style.visibility="hidden";
+                    document.getElementById("popUpcoupon").style.display="block";
+                    document.getElementById("taxWithTotal").innerHTML = response;
+                    document.getElementById('couponToggle').style.display="block"
+                    document.getElementById("couponDiscount").innerHTML =parseInt(total-response) ;     
+                        alertify.set('notifier','delay', 2);
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.success('coupon applied');
+                    // document.getElementById("message").innerHTML = "coupon is activated";
+                    hideLoader();
+                // document.getElementById("message").innerHTML = "already activated the code";
+                
+             }
+          }
+      });
+    
+    }
+    
+    
+   }
+
+   function removeCoupon(){
+    showLoader()
+      $.ajax({
+        url:'/remove-coupon',
+        method:'get',
+        success:(response)=>{
+           if(response){
+            console.log(response,'response')
+            document.getElementById("inputForCoupon").style.visibility="visible";
+                    document.getElementById("popUpcoupon").style.display="none";
+                    document.getElementById("couponDiscount").innerHTML ='Apply coupon'
+                  let value=  document.getElementById("taxWithTotal").innerHTML ;
+                  console.log(value,';value')
+                  console.log(response.totalBefore,'totalbefroe')
+                  document.getElementById("taxWithTotal").innerHTML =parseInt(value)+parseInt(response.totalBefore)
+                        alertify.set('notifier','delay', 2);
+                        alertify.set('notifier','position', 'top-right');
+                        alertify.error('coupon removed');
+                  hideLoader();
+           }
+        }
+      })
+   }
+</script>
