@@ -504,6 +504,11 @@
                               count = parseInt(count)+1
                               console.log(count)
                               $("#cart-count").html(count);
+
+                              let hambCart=$('#hamb-cart').html();
+                              hambCart=parseInt(hambCart)+1;
+                              $('#hamb-cart').html(hambCart);
+
                               $('.cart-btn').html('<span class="icon_bag_alt"></span> Go to cart');
                               $('.cart-btn').attr('onclick', 'window.location.href="/cart"');
                               hideLoader()

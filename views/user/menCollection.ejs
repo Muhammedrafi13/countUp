@@ -384,31 +384,47 @@
        function hideLoader() {
           document.getElementById("loader").style.visibility = "hidden";
         }
-    function addToWishList(proId){
-        showLoader() 
-        $.ajax({
-            url:`/add-to-wishlist/${proId}`,
-            method:'get',
-            success:(response)=>{
-               if(response.status){
-                        let wishListCount=$('#wishlist-count').html()
-                        console.log(wishListCount)
-                        wishListCount = parseInt(wishListCount)+1
-                        console.log(wishListCount)
-                        $("#wishlist-count").html(wishListCount);
-                        hideLoader()
-                        alertify.set('notifier','delay', 2);
-                        alertify.set('notifier','position', 'top-right');
-                        alertify.success('added to the wishlist');
-                        
-               }else{
-                hideLoader() 
-                alertify.set('notifier','delay', 2);
-                alertify.set('notifier','position', 'top-right');
-                alertify.error('you have this item in your wishlist');
-               
-               }
-            }
-        })
-    }
+
+ function addToWishList(proId){
+    showLoader()
+      $.ajax({
+          url:`/add-to-wishlist/${proId}`,
+          method:'get',
+          success:(response)=>{
+            console.log(response,'rs')
+             if(response.status===true){
+                      let wishListCount=$('#wishlist-count').html()
+
+
+                      let hambWishlist=$('#hamb-wishlist').html()
+                      hambWishlist = parseInt(hambWishlist)+1
+                      $("#hamb-wishlist").html(hambWishlist);
+                      
+                      console.log(wishListCount)
+
+                      wishListCount = parseInt(wishListCount)+1
+                 
+                      
+                      console.log(wishListCount)
+                      $("#wishlist-count").html(wishListCount);
+                   
+                      hideLoader()
+                      alertify.set('notifier','delay', 2);
+                      alertify.set('notifier','position', 'top-right');
+                      alertify.success('added to wishlist');
+                     
+             }else if(response.status===false){
+              hideLoader()
+              console.log('hieieie')
+              alertify.set('notifier','delay', 2);
+              alertify.set('notifier','position', 'top-right');
+              alertify.error('you have this item in your wishlist');
+              
+             }else if(!response){
+             
+              window.location.href='/login';
+             }
+          }
+      })
+  }
 </script>

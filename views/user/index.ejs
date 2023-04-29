@@ -597,10 +597,20 @@
             console.log(response,'rs')
              if(response.status===true){
                       let wishListCount=$('#wishlist-count').html()
+
+
+                      let hambWishlist=$('#hamb-wishlist').html()
+                      hambWishlist = parseInt(hambWishlist)+1
+                      $("#hamb-wishlist").html(hambWishlist);
+                      
                       console.log(wishListCount)
+
                       wishListCount = parseInt(wishListCount)+1
+                 
+                      
                       console.log(wishListCount)
                       $("#wishlist-count").html(wishListCount);
+                   
                       hideLoader()
                       alertify.set('notifier','delay', 2);
                       alertify.set('notifier','position', 'top-right');
