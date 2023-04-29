@@ -107,8 +107,8 @@ exports.placeOrder = async (req, res) => {
         payment_method: 'paypal'
       },
       redirect_urls: {
-        return_url: `http://localhost:3000/paymentsuccess/?objId=${orderId}`,
-        cancel_url: `http://localhost:3000/paypal-cancel/?objId=${orderId}`
+        return_url: `http://countup.live/paymentsuccess/?objId=${orderId}`,
+        cancel_url: `http://countup.live/paypal-cancel/?objId=${orderId}`
       },
       transactions: [{
         item_list: {
