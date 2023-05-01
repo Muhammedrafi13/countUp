@@ -45,8 +45,7 @@ exports.HomePage = async (req, res) => {
       productsByGender[gender] = group.products;
     });
 
-    console.log(productsByGender,'innovative');
-    console.log(products,'last 9')
+   
     res.render('user/index',{productsByGender});
 }
 exports.LoginPage = async (req, res) => {
@@ -65,7 +64,7 @@ exports.signUpPage = async (req, res) => {
     if (req.session.user) {
         res.redirect('/')
     } else {
-        console.log('signupppperr')
+     
         const loginErr = req.session.logginErr;
         req.session.logginErr = false;
         res.render('user/signUp', { login: loginErr,loginVe:true ,noShow:true })
@@ -76,9 +75,9 @@ exports.postSignUP = async (req, res) => {
     try {
      
         const existingUser = await User.findOne({$or:[{ email: req.body.email},{phone:req.body.phone}],status:true });
-        console.log(existingUser,'user ')
+      
         if (existingUser) {
-            console.log(`A user with email ${req.body.email} already exists`);
+         
             req.session.logginErr = 'Email id or phone number is already used';
             res.redirect('/signup');
 
@@ -96,24 +95,9 @@ exports.postSignUP = async (req, res) => {
             req.session.token = otplib.authenticator.generate(secret);
             const token = req.session.token;
             const sendMessage = function (mobile, res, next) {
-                console.log(mobile)
+                
             
-                // var options = {
-                //     authorization: process.env.SMS_KEY, //fill this with your api
-                //     message: `Your verification code is ${token}`,
-                //     numbers: [mobile],
-                //     route: `otp`,
-                // };
-                //send this message
-                // fast2sms
-                //     .sendMessage(options)
-                //     .then((response) => {
-                //         console.log(response);
-                //     })
-                //     .catch((error) => {
-                //         console.log(error);
-                //     });
-               ///
+             
 
                var req = unirest("GET", "https://www.fast2sms.com/dev/bulkV2");
 
@@ -146,7 +130,7 @@ exports.postSignUP = async (req, res) => {
            
             const newOtp = sendMessage(req.body.phone, res)  // pass the mobile 
             
-            console.log(newOtp, 'otptottttot')
+       
             const newOtpSend = new Otp({
                 email: req.body.email,
                 otp: newOtp
@@ -169,29 +153,29 @@ exports.postlogin = async (req, res) => {
             if (existingUser.isActive) {
                 bcrypt.compare(req.body.password, existingUser.password).then(async(status) => {
                     if (status) {
-                        console.log('user exist ');
+                    
                         req.session.user = existingUser;
                         req.session.user.loggedIn = true;
-                        console.log(req.session.user,"//////user");
+                       
                         await User.updateOne(
                             { _id: req.session.user._id },
                             { $pull: { appliedCoupon: { status: false } } }
                           );
                         res.redirect('/')
                     } else {
-                        console.log('password is not matching');
+                       
                         req.session.logginErr = 'password is not matching';
                         res.status(400).redirect('/login');
                     }
                 })
             } else {
-                console.log('your account has been blocked, contact admin');
+               
                 req.session.logginErr = 'your account has been blocked, contact admin';
                 res.status(400).redirect('/login');
             }
 
         } else {
-            console.log('not valid email');
+           
             req.session.logginErr = 'invalid email or passaword';
             res.status(400).redirect('/login');
         }
@@ -221,7 +205,7 @@ exports.userProfile = async(req,res)=>{
 }
   
 exports.editUserProfile = async(req,res)=>{
-    console.log(req.body,'userr');
+   
     const userProfile = await User.findOneAndUpdate(
         {_id: req.params.id}, // filter object
         {    name:req.body.name,
@@ -238,7 +222,7 @@ exports.editUserProfile = async(req,res)=>{
 
 
 exports.updateUserAddress =async(req,res)=>{
-       console.log(req.body.userId,'idddd')
+       
        let user = req.session.user;
       const address = await User.findOneAndUpdate({ _id: user._id }, 
          { $push: {
@@ -253,7 +237,7 @@ exports.updateUserAddress =async(req,res)=>{
 
              } } }, 
          { new: true });
-       console.log(address,'address')
+      
        res.json(address); 
 }
 
@@ -273,15 +257,15 @@ exports.deleteUserAddress = async(req,res)=>{
   
 
 exports.sendOtpEmail = async(req,res)=>{
-  console.log(req.body.email,'jds')
+
   let email =req.body.email;
   let verifiedUser = await User.findOne({ email:req.body.email , status: 'true' })
-  console.log(verifiedUser,'tell me  the user id')
+ 
   if(verifiedUser){
     req.session.verifiedUserEmail = verifiedUser
     req.session.emailOtp = otplib.authenticator.generate(secret);
     let emailOtp =   req.session.emailOtp 
-    console.log(emailOtp,'otp')
+   
     const nodemailer = require("nodemailer");
     let transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -310,7 +294,7 @@ exports.sendOtpEmail = async(req,res)=>{
       }
     });
   }else{
-    console.log('hello')
+   
     res.json({message:'please enter registered email'})
   }
   
@@ -320,7 +304,7 @@ exports.sendOtpEmail = async(req,res)=>{
 }
 
 exports.verifyEmailOtp = async(req,res)=>{
-    console.log(req.body.otp,'otp')
+    
     if(req.session.emailOtp === req.body.otp){
         res.json(true)
     }else{
@@ -341,17 +325,16 @@ exports.resetPassword = async(req,res)=>{
 
 exports.resetNewPassword = async(req,res)=>{
 
-    console.log(req.body.password,'paswword')
-    console.log(req.session.verifiedUserEmail,'fadsf')
+   
     if(req.session.verifiedUserEmail){
-        console.log(req.session.verifiedUserEmail)
+       
         const hashPassword = await bcrypt.hash(req.body.password, 10);
 
          let result = await User.findOneAndUpdate(
         {_id: req.session.verifiedUserEmail._id}, // filter object
         {password: hashPassword} // update object
       );
-       console.log(result,'result')
+    
         res.redirect('/login')
     }else{
         res.redirect('/login')
@@ -374,10 +357,10 @@ exports.confirmAndUpdatePassword = async(req,res)=>{
             {password: hashPassword} // update object
           );
 
-           console.log('huihadsfasdfasd')
+          
             res.json(true)
         } else {
-            console.log('password is not matching');
+           
            
             res.json({message:'not matching'})
         }

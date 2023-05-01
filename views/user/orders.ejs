@@ -171,7 +171,7 @@
             <div class="card mt-4 border border-2">
                 <div class="card-header d-flex justify-content-around bg-dark-subtle bg-opacity-50">
                     <span>Order <%= element.paymentstatus %> <%= new Date(element.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour12: true }) %></span>
-                   <span> Address : <%= element.deliveryDetails.address %></span>
+                   <!-- <span> Address : <%#= element.deliveryDetails.address %></span> -->
                    <span> Total Rs:<%= element.totalAmount %> </span>
                    <span> Order Summary</span>
                 </div>

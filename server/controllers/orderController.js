@@ -44,17 +44,17 @@ exports.deliveryAddressSave = async (req, res) => {
 exports.placeOrder = async (req, res) => {
 
 
-  console.log(req.body, 'in eneed address checkbox id ')
+  
   let deliveryAddress = await User.findOne(
     { _id: req.body.userId, "address._id": req.body.deliverAddressId },
     { "address.$": 1 }
   );
-  console.log(deliveryAddress, 'new ly addess')
+
   let filterAddress = deliveryAddress.address[0]
-  console.log(filterAddress.name, 'fffffffffffffffffffffff')
+ 
   let cart = await Cart.findOne({ user: req.body.userId });
-  console.log(cart,'caart')
-  // console.log(cart,req.body.totalPrice)
+
+  
   let status = req.body['payment-method'] === 'COD' ? 'placed' : 'pending'
   let orderObj = new Order({
     deliveryDetails: {
@@ -78,14 +78,14 @@ exports.placeOrder = async (req, res) => {
 
   });
   let orderDoc = await Order.create(orderObj);
-  console.log(orderDoc, 'order createad content')
+
   let orderId = orderDoc._id
   let orderIdString = orderId.toString();
-  console.log(orderIdString, 'order string')
+
   if (req.body['payment-method'] == 'COD') {
     res.json({ codSuccess: true })
   } else if (req.body['payment-method'] == 'RazorPay') {
-    console.log(orderDoc._id, 'iddd of order')
+  
     var options = {
       amount: orderDoc.totalAmount * 100,  // amount in the smallest currency unit
       currency: "INR",
@@ -100,7 +100,7 @@ exports.placeOrder = async (req, res) => {
 
     let amount = Math.floor(orderDoc.totalAmount/75);
     amount = new String(amount)
-    console.log(amount,'amount 1')
+
     const create_payment_json = {
       intent: 'sale',
       payer: {
@@ -132,15 +132,13 @@ exports.placeOrder = async (req, res) => {
       if (error) {
         console.log(error);
       } else {
-        console.log('Create Payment Response');
-        console.log(payment);
-        console.log(payment.links[1].href, 'link')
+       
         // Check that payment.links[1] exists
         if (payment.links && payment.links[1]) {
           // Redirect the user to the PayPal checkout page
           res.json({ payment });
         } else {
-          console.log('Payment response missing redirect URL');
+        
           res.status(500).send('Unable to process payment');
         }
       }
@@ -157,11 +155,11 @@ exports.successPagePayPal = async (req, res) => {
   const payerId = req.query.PayerID;
   const paymentId = req.query.paymentId;
   let objId = req.query.objId;
-  console.log(objId, 'obj id')
+
   let orderDoc = await Order.findOne({_id:objId})
   let amount = Math.floor(orderDoc.totalAmount/75)
   amount = new String(amount)
-  console.log(amount,'amount')
+
   const execute_payment_json = {
     payer_id: payerId,
     transactions: [
@@ -211,8 +209,7 @@ exports.orderSuccess = async (req, res) => {
   let userObjId = req.session.user._id;
   let userId = userObjId.toString();
 
-console.log(req.session.user._id,'adfad')
-console.log(req.session.coupon,'coupon app')
+
 if(req.session.coupon){
  await User.updateOne(
     { _id: req.session.user._id, 'appliedCoupon.applied': req.session.coupon.couponCode },
@@ -236,7 +233,7 @@ if(req.session.coupon){
 
  
 exports.paymentVerify = async (req, res) => {
-  console.log(req.body, '..success of order')
+  
 
   try {
     let details = req.body;
@@ -261,7 +258,7 @@ exports.paymentVerify = async (req, res) => {
         })
 
 
-      console.log("payment is successful");
+   
       res.json({ status: true })
 
     } else {
@@ -299,7 +296,6 @@ exports.orderDetails = async (req, res) => {
   }).exec();
 
 
-  console.log(orders, 'ordersgg')
   if(req.session.filterOrders){
     res.locals.orders=req.session.filterOrders
     req.session.filterOrders = null;
@@ -326,72 +322,16 @@ exports.orderDetails = async (req, res) => {
 
 
 exports.viewPlacedOrder = async (req, res) => {
-  console.log(req.params.id, 'parma')
+
   let orderId = req.params.id;
   let objId = new ObjectId(orderId);
 
-  // let orderItems = await Order.aggregate([
-  //   {
-  //     $match: { _id: objId }
-  //   },
-  //   {
-  //     $unwind: '$products'
-  //   },
-  //   {
-  //     $project: {
-  //       item: { $toObjectId: '$products.item' },
-  //       quantity: '$products.quantity'
-  //     }
-  //   },
-  //   {
-  //     $lookup: {
-  //       from: 'products',
-  //       localField: 'item',
-  //       foreignField: '_id',
-  //       as: 'productInfo' 
-  //     }
-  //   },
-  //   {
-  //     $project: {
-  //       item: 1,
-  //       quantity: 1,
-  //       productInfo: { $arrayElemAt: ['$productInfo', 0] }
-  //     }
-  //   },
-  // ])
- 
- 
   
-  console.log(orderItems, '..orderItems');
   res.render('user/viewOrderProducts', { user: req.session.user, orderItems })
 
 }
 
-exports.orderSearch = async(req,res)=>{
   
-  //  console.log(req.body.search)
- 
-   
-  // const productSearch = req.body.search;
-  // const orders =  await Order.find({
-  //    userId: req.session.user._id,
-  //   'products.item': { $exists: true }
-  //    }).populate({
-  //     path: 'products.item',
-  //     model: 'Product',
-  //     match: { productName: { $regex: productSearch, $options: 'i' } }
-  //   }).exec() 
-  //   const filteredOrders = orders.filter(order => {
-  //     return order.products.some(product => product.item != null);
-  //   });
-  // //  req.session.orders =product;
-  // const orderss = JSON.parse(JSON.stringify(filteredOrders));
-    //  console.log(orderss,'orderes itemssssss')
-    //  let orderss = filteredOrders
-     
-    // res.render('user/orders', { user: req.session.user,orderss })
-  //  res.redirect('/orders')
-}  
 
 exports.sortOrders = async(req,res)=>{
     console.log(req.body,'afadsf')
@@ -409,7 +349,7 @@ exports.sortOrders = async(req,res)=>{
       path: 'products.item',
       model: 'Product'
     }).exec();
-    console.log(orders,'sorted datea');
+   
     if(orders){
       req.session.filterOrders = orders
     }else{
@@ -423,7 +363,7 @@ exports.invoice = async(req,res)=>{
   
   let productId = req.query.productId
   let orderId = req.query.orderId;
-  console.log(productId,orderId,'first pro second order')
+  
 
   let orders = await Order.find({ _id: orderId })
   .populate({
@@ -432,7 +372,7 @@ exports.invoice = async(req,res)=>{
   }).exec();
 
 
-  console.log(orders,'total')
+
 
 
   let product = null;
@@ -446,8 +386,6 @@ exports.invoice = async(req,res)=>{
   }
   
 
-  console.log(product,'particluar')
-  console.log(orders,'total')
 
    res.render('user/invoice',{orders,product,user: req.session.user,noShow:true});
 }
@@ -457,7 +395,7 @@ exports.cancelOrder =async(req,res)=>{
  
   let productId = req.query.productId
   let orderId = req.query.orderId;
-  console.log(productId,orderId,'first pro second order')
+
 
   let orders = await Order.find({ _id: orderId })
   .populate({
@@ -477,8 +415,7 @@ exports.cancelOrder =async(req,res)=>{
       break; // Exit the loop once product is found
     }
   }
-  console.log(orders,'total')
-  console.log(product,'igot the product')
+
   res.redirect('/orders')
 
 }
@@ -487,7 +424,7 @@ exports.returnOrder = async(req,res)=>{
      
   let productId = req.query.productId
   let orderId = req.query.orderId;
-  console.log(productId,orderId,'first pro second order')
+ 
 
   let orders = await Order.find({ _id: orderId })
   .populate({
@@ -507,8 +444,7 @@ exports.returnOrder = async(req,res)=>{
       break; // Exit the loop once product is found
     }
   }
-  console.log(orders,'total')
-  console.log(product,'igot the product')
+ 
   res.redirect('/orders')
 }
 
@@ -563,7 +499,7 @@ exports.listOfNotShippedOrder = async(req,res)=>{
 exports.orderSummary = async(req,res)=>{
   let productId = req.query.productId
   let orderId = req.query.orderId;
-  console.log(productId,orderId,'first pro second order')
+  
 
   let orders = await Order.find({ _id: orderId })
   .populate({
@@ -572,7 +508,7 @@ exports.orderSummary = async(req,res)=>{
   }).exec();
 
 
-  console.log(orders,'total')
+ 
 
 
   let product = null;
@@ -586,8 +522,7 @@ exports.orderSummary = async(req,res)=>{
   }
   
 
-  console.log(product,'particluar')
-  console.log(orders,'total')
+  
      res.render('user/orderSummary',{orders,product,user: req.session.user,noShow:true})
 }
   
@@ -615,12 +550,12 @@ exports.ordersAdminPanal = async (req,res)=>{
    
  
 
-      console.log(orders,'allll')
+ 
       res.render('admin/orderDetails',{admin:true,adminDetails})
 } 
 
 exports.orderDetailsAdmin = async(req,res)=>{
-   console.log(req.body,'selected ')
+   
    
   let productId = req.query.productId
   let orderId = req.query.orderId;
@@ -656,7 +591,7 @@ exports.orderDetailsAdmin = async(req,res)=>{
 }
 
 exports.salesReport = async(req,res)=>{
-  console.log(req.body.selector,'report body ')
+  
   const selector = req.body.selector;
 
   // Extracting the relevant parts based on the selector
@@ -671,8 +606,7 @@ exports.salesReport = async(req,res)=>{
           const today = new Date();
            weekStart = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
            weekEnd = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay() + 6);
-          console.log(weekStart,'weekstart')
-          console.log(weekEnd,'weekEnd')
+  
 
       } else if (selector.startsWith('day')) {
           day = new Date(selector.slice(4));
@@ -692,7 +626,7 @@ exports.salesReport = async(req,res)=>{
         })
         .exec();;
         req.session.admin.orderThisWeek =orderThisWeek;
-        console.log(orderThisWeek, 'details of this week');
+     
         return res.redirect('/admin/sales-report')
       
       }
@@ -711,7 +645,7 @@ exports.salesReport = async(req,res)=>{
         })
         .exec();;
         req.session.admin.orderThisMonth =orderThisMonth;
-        console.log(orderThisMonth, 'details of this month');
+        
         return res.redirect('/admin/sales-report')
       
       }
@@ -732,7 +666,7 @@ exports.salesReport = async(req,res)=>{
         })
         .exec();;
         req.session.admin.orderThisDay =orderThisDay;
-        console.log(orderThisDay, 'details of this day');
+
         return res.redirect('/admin/sales-report')
 
       }
@@ -748,7 +682,7 @@ exports.salesReport = async(req,res)=>{
         })
         .exec();;
         req.session.admin.orderThisYear =orderThisYear;
-        console.log(orderThisYear,'details of this year')
+   
         return res.redirect('/admin/sales-report')
        
       }
@@ -785,6 +719,6 @@ exports.salesSummary = async(req,res)=>{
   }else{
    res.locals.orders = orders;
   }
-  console.log(orders,'sales reprot order summaryu')
+ 
   res.render('admin/salesReport',{admin:true,adminDetails})
 }

@@ -15,7 +15,7 @@ exports.couponPage = async (req,res)=>{
 }
 
 exports.postCoupon = async (req,res)=>{
-    console.log(req.body,'...body')
+
     const voucher = voucher_codes.generate({
         prefix: "Cp-",
         length: 7,
@@ -88,7 +88,7 @@ exports.updateCoupon = async(req,res)=>{
       expires:couponExp  
     },
     { new: true });
-    console.log(updatedCoupn,'updatedcoupon')
+
     await res.json(updatedCoupn);
    }catch(error){
     console.log(error)
@@ -111,14 +111,14 @@ exports.updateCoupon = async(req,res)=>{
 
 //user
 exports.applyCoupon = async(req,res)=>{
-     console.log(req.body,'...coupon id ');
+  
      let cartTotal = parseInt(req.body.total);
      let matchCouponId = await Coupon.findOne({
       couponCode: req.body.couponId,
       statusEnable: true, // check if the coupon is enabled
       expires: {$gt: Date.now()} // check if the current date is before the expiry date
       });
-     console.log(matchCouponId,'original')
+
      if(!matchCouponId){
         return await res.json({ message: 'Invalid coupon code' })
      }else if(cartTotal < matchCouponId.minPurchase) {
@@ -142,12 +142,11 @@ exports.applyCoupon = async(req,res)=>{
       ]);
     
       
-      console.log(proExist,'proeixsit')
+     
       if(proExist.length){
         return await res.json({ message: 'coupon is already applied' })
       }
     
-     console.log(req.session.coupounStatus)
     if (!req.session.couponStatus){
         let user = await User.findOneAndUpdate(
             { _id: req.session.user._id },
@@ -158,8 +157,7 @@ exports.applyCoupon = async(req,res)=>{
             { new: true })
              req.session.couponStatus = true;
              const discountedTotal = cartTotal - matchCouponId.discount;
-             console.log(user,'resssssssss')
-             console.log(matchCouponId,'idd')
+           
              req.session.coupon = matchCouponId;
          
              return await res.json(discountedTotal);
@@ -179,8 +177,7 @@ exports.removeCoupon = async(req,res)=>{
       appliedCoupon: { $elemMatch: { status: false } } 
     }
   );
-        console.log(backToTotal,'gdrgdg')
-        console.log(backToTotal.appliedCoupon[0].coupondis)
+  
         let response={
            totalBefore:backToTotal.appliedCoupon[0].coupondis
         };

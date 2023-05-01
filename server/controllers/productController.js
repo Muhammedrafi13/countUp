@@ -62,7 +62,7 @@ exports.womensPage = async (req, res) => {
 exports.kidsPage = async (req, res) => {
   try {
     const kidsProducts = await Product.find({ gender: { $in: [ "girls","boys"] },softdelete: false  });
-    console.log(kidsProducts,'kids')
+  
     res.render('user/kidsCollection', { kidsProducts });
   } catch (error) {
     console.log(error);
@@ -113,8 +113,7 @@ exports.genderFilter = async(req,res)=>{
     // let gender = req.body.gender
     let gender = req.params.gender;
     let category = req.params.category;
-    console.log(category,'catgeory')
-    console.log('gender ',gender);
+  
 
     
     let product;
@@ -131,7 +130,7 @@ exports.genderFilter = async(req,res)=>{
      match: { name: category }
    })
    .exec();
-   console.log(product,'pro')
+   
    const filteredProducts = product.filter(product => product.category !== null);
    product = filteredProducts;
   }
@@ -149,10 +148,10 @@ exports.genderFilter = async(req,res)=>{
 
 
 exports.postSearch = async(req,res)=>{
-   console.log(req.body.search,'hiiiiiiiasdfasdf')
+ 
    let regex = new RegExp(req.body.search,"i");
    let product = await Product.find({$or:[{productName:{$regex:regex}}]})
-   console.log(product,'products')
+ 
    req.session.search =product;
    res.redirect('/shop')
    
@@ -194,8 +193,7 @@ exports.postProduct = (req, res, next) => {
         return res.status(400).send({ error: err.message });
       }
     }
-    console.log(req.body)
-    console.log(req.files)
+  
 
     try {
       const newProduct = new Product({
@@ -221,7 +219,7 @@ exports.viewProduct = async (req, res) => {
   try {
     const products = await Product.find()
     .populate('category');
-    console.log(products,'products')
+ 
     let adminDetails = req.session.admin;
     res.render('admin/viewProduct', { products, admin: true, adminDetails });
   } catch (error) {
@@ -265,7 +263,7 @@ exports.kid = async (req, res) => {
 exports.getEditProductPage = async (req, res) => {
   try {
     const editProduct = await Product.findOne({ _id: req.params.id }).populate('category');
-    console.log(editProduct,'edit')
+
     let categoryData = await Category.find();
     let adminDetails = req.session.admin;
     res.render('admin/editProduct', { editProduct, admin: true, adminDetails ,categoryData})
@@ -296,7 +294,7 @@ exports.editProduct = async (req, res) => {
       // If no new images are uploaded, keep the existing ones
       imageFiles = product.images;
     }
-      console.log(imageFiles,'ing files')
+      
    
       await Product.findByIdAndUpdate(req.params.id, {
         productName: req.body.productName,
@@ -310,7 +308,7 @@ exports.editProduct = async (req, res) => {
       })
    
       await res.redirect(`/admin/edit/${req.params.id}`);
-      console.log('redirected')
+ 
     } catch (error) {
       console.log(error)
     }
@@ -334,7 +332,7 @@ exports.deleteProduct = async (req, res) => {
 
 exports.enableProduct =async (req,res) =>{
   try{
-    console.log('hii')
+
     await Product.findByIdAndUpdate({ _id: req.params.id },{
       softdelete: false
     });

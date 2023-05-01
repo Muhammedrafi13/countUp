@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 exports.categoryPage = async(req,res)=>{
     let adminDetails =req.session.admin;
     let categoryData = await Category.find();
-    console.log(categoryData)
+   
     if(req.session.admin.categoryErr){
       res.locals.catErr =req.session.admin.categoryErr;
       req.session.admin.categoryErr=null;
@@ -14,7 +14,7 @@ exports.categoryPage = async(req,res)=>{
 }
 
 exports.postCategory = async(req,res)=>{
-    console.log(req.body,'body of catgeory')
+    
 
     const newCategory = new Category({
         name: req.body.category
@@ -22,7 +22,7 @@ exports.postCategory = async(req,res)=>{
 
     try {
         await Category.create(newCategory);
-        console.log('Category saved successfully');
+ 
         req.session.admin.categoryErr = ''
       } catch (error) {
         // check if the error is a duplicate key error

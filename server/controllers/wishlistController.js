@@ -15,10 +15,10 @@ exports.addToWishList = async(req,res)=>{
 
         let wishListItem = await Wishlist.findOne({ user_id: req.session.user._id})
         
-        console.log(wishListItem,'ewich lsit')
+      
         if(wishListItem){
            const productIndex = wishListItem.products.findIndex(product =>String(product.product_id) === String(prdId));
-           console.log(productIndex,'value of exist or not')
+         
     
            if(productIndex !== -1){
               return  res.json({status:false})
@@ -37,7 +37,7 @@ exports.addToWishList = async(req,res)=>{
            return res.json({status:true})
         }
       }else{
-        console.log('hello')
+       
         return res.json(false)
       }
        
@@ -54,11 +54,11 @@ exports.wishListPage = async(req,res)=>{
            const wishItems = await Wishlist.findOne({ user_id: req.session.user._id }).populate('products.product_id');
           if (!wishItems) {
             // Handle the case when no wishlist is found
-            console.log(wishItem,'newone')
+           
             return res.render('user/wishList')
           }else {
             
-            console.log(wishItems,'wishisi')
+            
             return res.render('user/wishList',{wishItems})
           }
           
@@ -81,7 +81,7 @@ exports.removeFromWishlist = async(req,res)=>{
         { $pull: { products: { product_id: productIdToRemove } } },
         { new: true }
       );
-     console.log(updatedDoc)
+     
       res.redirect('/wishlist')
     }catch(error){
         console.log(error)
@@ -97,7 +97,7 @@ exports.wishlistToProDetails = async (req, res) => {
         { $pull: { products: { product_id: productIdToRemove } } },
         { new: true }
       );
-      console.log(updatedDoc)
+      
       const productDetails = await Product.findOne({ _id: req.params.id });
       res.render("user/productDetails", { productDetails });
     } catch (error) {

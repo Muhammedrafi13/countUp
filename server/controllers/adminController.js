@@ -22,28 +22,27 @@ exports.adminLogin = async (req, res) => {
 
 }
 exports.postAdminlogin = async (req, res) => {
-  console.log(req.body.email)
-  console.log(req.body.password)
+  
 
   try {
     const existingAdmin = await Admin.findOne({ email: req.body.email })
     if (existingAdmin) {
       bcrypt.compare(req.body.password, existingAdmin.password).then((status) => {
         if (status) {
-          console.log('admin exist ')
+       
           req.session.admin = existingAdmin;
           req.session.admin.loggedIn = true;
           res.redirect('/admin/dashboard')
 
         } else {
-          console.log('password is not matching');
+     
           req.session.adminErr = 'password is not matching';
           res.redirect('/admin')
         }
       })
     } else {
 
-      console.log('not valid email');
+      
       req.session.adminErr = 'not valid email';
       res.redirect('/admin')
     }
@@ -95,7 +94,7 @@ exports.getDashboard = async (req, res) => {
     return accumulator;
   }, 0);
 
-  console.log(orders, 'order details')
+
 
 
 
@@ -134,7 +133,7 @@ exports.getDashboard = async (req, res) => {
     }
   ]);
 
-  console.log(orderBasedOnMonths, 'vall')
+
 
 
 

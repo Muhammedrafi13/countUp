@@ -68,7 +68,7 @@ router.post('/delivery-address',orderController.deliveryAddressSave);
 router.get('/paymentsuccess/',userVerify.verifyUserLogin,orderController.successPagePayPal);
 router.get('/paypal-cancel/',userVerify.verifyUserLogin,orderController.cancelPagePayPal)
 router.get('/payment-failed',userVerify.verifyUserLogin,orderController.paymentFailed);
-router.post('/orders',orderController.orderSearch);
+
 router.post('/orders/date',orderController.sortOrders);
 router.get('/invoice/',userVerify.verifyUserLogin,orderController.invoice);
 router.get('/cancel-order/',userVerify.verifyUserLogin,orderController.cancelOrder);

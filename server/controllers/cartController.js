@@ -9,11 +9,10 @@ const ObjectId = mongoose.Types.ObjectId;
 exports.addToCart = async (req,res)=>{
     try{  
          //need prodcut id and user session id
-         console.log(req.query.size,'size')
+       
           let proPrice = await Product.findOne({_id:req.params.id})
           let taxAmount = Math.floor(((proPrice.salePrice)/100)*12)
-          console.log(taxAmount,'taxxxxxxxxxxx')
-          console.log(proPrice,'proPrice')
+     
 
           let proObj = {
           item : req.params.id,
@@ -30,7 +29,7 @@ exports.addToCart = async (req,res)=>{
      
         if(userCart){
             let proExist = userCart.products.findIndex(product=> product.item===req.params.id && product.size === req.query.size)
-            console.log(proExist,"....proExist")
+     
             if(proExist !=-1){
                await Cart.updateOne({user:req.session.user._id,'products.item':req.params.id},{$inc:{'products.$.quantity':1}});
           
@@ -58,7 +57,7 @@ exports.addToCart = async (req,res)=>{
   exports.getCartProducts = async (req,res)=>{
     try{
       let cartuuu = await Cart.findOne({user:req.session.user._id})
-      console.log(cartuuu,'value')
+
       let cartItems = await Cart.aggregate([
         {
           $match:{user:req.session.user._id}
@@ -146,8 +145,7 @@ exports.addToCart = async (req,res)=>{
         }
      
       ]);
-      console.log(cartItems,'cart')
-      console.log(displayTotal,'dispak')
+ 
       let subtotal=0;
       let tax=0;
       let totalWithTax=0;
@@ -156,7 +154,7 @@ exports.addToCart = async (req,res)=>{
        tax =displayTotal[0].totalTax;
        totalWithTax=displayTotal[0].totalWithTax;
     }
-       console.log(displayTotal,'....')
+     
 
       if(req.session.coupon){ 
        
@@ -262,7 +260,7 @@ exports.addToCart = async (req,res)=>{
          
           ]);
           
-          console.log(displayTotal,".....dfsad")
+   
           if(count == -1 && quantity ==1){
             if(displayTotal.length===0){
               if(req.session.coupon){ 
@@ -364,9 +362,9 @@ exports.addToCart = async (req,res)=>{
   
   exports.removeProductCart = async(req,res)=>{
     try{
-      console.log(req.body.product,'iddunique')
+
       let unique_id=new ObjectId(req.body.product)
-      console.log(req.body.product,'iddunique')
+ 
        await Cart.updateOne(
            { 
                 _id: req.body.cart,
@@ -563,21 +561,20 @@ exports.addToCart = async (req,res)=>{
         tax =Math.floor((total/100)*12)
         totalWithTax =total+tax
       }
-      console.log(cartItems,'proaucts...')
+    
    
       let deliveryAddress = await User.findOne({_id:req.session.user._id})
       const userId = req.session.user._id;
       const user = await User.findById(userId);
       const hasAddress = user.address && user.address.length > 0;
-      console.log(hasAddress,'trrr')
+ 
       let couponDis;
       // if(user.appliedCoupon.length){
       //   let appliedCoupon = user.appliedCoupon[0];
       //   console.log(appliedCoupon,'coup')
       //    couponDis = appliedCoupon.coupondis;
       // }
-      console.log(hasAddress,'has address')
-      console.log(req.session.coupon)
+   
       if(req.session.coupon){
         couponDis = req.session.coupon.discount
       }
@@ -595,7 +592,7 @@ exports.addToCart = async (req,res)=>{
   
   exports.productSizeSelector =async(req,res)=>{
       let proId = req.query.proId;
-      console.log(proId,'product di')
+ 
       if(req.session.user){
         let cartItem = await Cart.findOne({
           user: req.session.user._id,
@@ -606,7 +603,7 @@ exports.addToCart = async (req,res)=>{
             } 
           }
         });
-        console.log(cartItem,'valeu')
+    
         if (cartItem) {
           return res.json(true)
         } else {
