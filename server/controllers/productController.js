@@ -92,8 +92,10 @@ exports.shopPage = async (req, res) => {
    
     if(req.session.product){
       res.locals.product = req.session.product;
+      req.session.product = null;
     }else if(req.session.search){
       res.locals.product = req.session.search;
+      req.session.search = null;
     }
     else{
       res.locals.product = await Product.find({gender:{ $all : ["men"]},softdelete: false })
@@ -116,41 +118,27 @@ exports.genderFilter = async(req,res)=>{
 
     
     let product;
-
-    if(gender === 'men'){
-       product = await Product.find({ gender: { $all: ["men"] },softdelete: false  })
-    }else if(gender === 'women'){
-       product = await Product.find({ gender: { $all: ["women"] },softdelete: false  })
-    }else if(gender === 'boys'){
-       product = await Product.find({ gender: { $all: ["boys"] },softdelete: false  })
-    }else if(gender === 'girls'){
-       product = await Product.find({ gender: { $all: ["girls"] },softdelete: false  })
-    }
-    
-
-    if(category === 'Shirt'){
-       product = await Product.find()
-       .populate({
-        path: 'category',
-        match: { name: 'Shirt' }
-      })
-      .exec();
-      console.log(product,'pro')
-      const filteredProducts = product.filter(product => product.category !== null);
-      product = filteredProducts;
-    }else if( category === 'Kurta'){
-      product = await Product.find()
-      .populate({
-       path: 'category',
-       match: { name: 'Kurta' }
-     })
-     .exec();
-     console.log(product,'pro')
-     const filteredProducts = product.filter(product => product.category !== null);
-     product = filteredProducts;
-    }
      
+  if(gender!="undefined"){
+
+      product = await Product.find({ gender: { $all: [gender] },softdelete: false  })
+ 
+  }else{
+ 
+    product = await Product.find()
+    .populate({
+     path: 'category',
+     match: { name: category }
+   })
+   .exec();
+   console.log(product,'pro')
+   const filteredProducts = product.filter(product => product.category !== null);
+   product = filteredProducts;
+  }
    
+
+  
+
 
       req.session.product = product
       res.json(true)
@@ -161,9 +149,10 @@ exports.genderFilter = async(req,res)=>{
 
 
 exports.postSearch = async(req,res)=>{
-  
+   console.log(req.body.search,'hiiiiiiiasdfasdf')
    let regex = new RegExp(req.body.search,"i");
    let product = await Product.find({$or:[{productName:{$regex:regex}}]})
+   console.log(product,'products')
    req.session.search =product;
    res.redirect('/shop')
    
@@ -275,7 +264,8 @@ exports.kid = async (req, res) => {
 
 exports.getEditProductPage = async (req, res) => {
   try {
-    const editProduct = await Product.findOne({ _id: req.params.id })
+    const editProduct = await Product.findOne({ _id: req.params.id }).populate('category');
+    console.log(editProduct,'edit')
     let categoryData = await Category.find();
     let adminDetails = req.session.admin;
     res.render('admin/editProduct', { editProduct, admin: true, adminDetails ,categoryData})
@@ -307,15 +297,16 @@ exports.editProduct = async (req, res) => {
       imageFiles = product.images;
     }
       console.log(imageFiles,'ing files')
-
+   
       await Product.findByIdAndUpdate(req.params.id, {
         productName: req.body.productName,
         productPrice: req.body.productPrice,
+        category: req.body.category,
         salePrice: req.body.salePrice,
         gender: req.body.gender,
         stock: req.body.stock,
         images: imageFiles,
- 
+       
       })
    
       await res.redirect(`/admin/edit/${req.params.id}`);

@@ -125,13 +125,13 @@
                                       <form  id="cpn-edit-form" method="post">
   
                                           <label for="Category">Coupon Code</label>
-                                          <input type="text" id="couponCode" name="couponCode" class="form-control" required>
+                                          <input type="text" id="couponCode" name="couponCode" class="form-control validate" required>
   
                                           <label for="Category">Discount</label>
-                                          <input type="text" id="cpnDiscount" name="discount" class="form-control" required>
+                                          <input type="text" id="cpnDiscount" name="discount" class="form-control validate" required>
   
                                           <label for="Category">Minimum Purchase</label>
-                                          <input type="text" id="minPurchase" name="minPurchase" class="form-control" required>
+                                          <input type="text" id="minPurchase" name="minPurchase" class="form-control validate" required>
   
                                           <label for="Category">Expires On</label>
                                           <input type="date" id="cpnExp" name="expires" class="form-control" required>
@@ -208,12 +208,12 @@
              "Special characters and spaces are not allowed"
            );
            $.validator.addMethod(
-      "isNumber",
-      function (value, element) {
-        return this.optional(element) || (!isNaN(Number(value)) && /\S/.test(value));
-      },
-      "Please enter a valid number"
-    );
+              "isNumber",
+              function (value, element) {
+                return this.optional(element) || (!isNaN(Number(value)) && /^\d+(\.\d+)?$/.test(value));
+              },
+              "Please enter a valid number"
+           );
      
            $("#cpn-gen-form").validate({
              rules: {
@@ -264,7 +264,10 @@
          });
   
 
-     
+
+         
+
+         
   
    
     // function editCoupon(couponId){
@@ -315,7 +318,7 @@
 
 $('#saveCouponBtn').click(function() {
   
-  showLoader()
+  
   // Get the coupon details from the form fields
   let couponCode = $('#couponCode').val();
   let couponDiscount = $('#cpnDiscount').val();
@@ -323,7 +326,18 @@ $('#saveCouponBtn').click(function() {
   let couponMinPurchase = $('#minPurchase').val();
   let couponExp = $('#cpnExp').val();
   let couponId = $('#couponId').val();
-
+  // Validate the form fields
+  let isValid = true;
+  $('.validate').each(function() {
+    if ($(this).val() === '') {
+      $(this).addClass('is-invalid');
+      isValid = false;
+    } else {
+      $(this).removeClass('is-invalid');
+    }
+  });
+  if (isValid) {
+    showLoader()
   // Send an AJAX request to update the coupon details
   $.ajax({
     url: '/admin/update-coupon',
@@ -356,6 +370,8 @@ $('#saveCouponBtn').click(function() {
     }
 
   });
+
+}
 });
 
 

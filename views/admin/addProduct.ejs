@@ -83,13 +83,14 @@
       },
       "Special characters and spaces are not allowed"
     );
+ 
     $.validator.addMethod(
-      "isNumber",
-      function (value, element) {
-        return this.optional(element) || (!isNaN(Number(value)) && /\S/.test(value));
-      },
-      "Please enter a valid number"
-    );
+  "isNumber",
+  function (value, element) {
+    return this.optional(element) || (!isNaN(Number(value)) && /^\d+(\.\d+)?$/.test(value));
+  },
+  "Please enter a valid number"
+);
     $("#addProductForm").validate({
       rules: {
 
