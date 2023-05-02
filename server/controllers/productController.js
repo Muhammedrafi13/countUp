@@ -100,9 +100,12 @@ exports.shopPage = async (req, res) => {
     else{
       res.locals.product = await Product.find({gender:{ $all : ["men"]},softdelete: false })
     }
+
+    let categoryNames=await Category.find()
+   
   
    
-    res.render('user/shop', { user  });
+    res.render('user/shop', { user,categoryNames  });
   } catch (error) {
     console.log(error)
   }

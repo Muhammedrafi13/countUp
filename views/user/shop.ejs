@@ -116,36 +116,22 @@
                         <div class="section-title">
                             <h4>Categories</h4>
                         </div>
-                        <div>
+
+                        <% locals.categoryNames.forEach(element => { %>
+                         
+                    
+                        <div> 
+
                         <label>
-                          <input type="checkbox" name="category" value="Shirt">
-                          Shirts
+                          <input type="checkbox" name="category" value="<%=element.name %>">
+                          <%= element.name %>
                         </label>
-                      </div>
-                      <div>
-                        <label>
-                          <input type="checkbox" name="category" value="Jeans">
-                          Jeans
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <input type="checkbox" name="category" value="Jackets">
-                          Jackets
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <input type="checkbox" name="category" value="Pants">
-                          Pants
-                        </label>
-                      </div>
-                      <div>
-                        <label>
-                          <input type="checkbox" name="category" value="Kurta">
-                       Kurta
-                        </label>
-                      </div>
+
+                        </div>
+                      <% }) %>
+
+                   
+                   
                     </div>
                 </div>
             </div>
