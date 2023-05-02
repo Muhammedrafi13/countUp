@@ -47,3 +47,25 @@ exports.cartCount = async(req,res,next)=>{
         next();
     }
 }
+
+exports.verifyIsActive = async(req,res,next)=>{
+    if(req.session.user){
+        const existingUser = await User.findOne({ email: req.session.user.email, status: 'true',isActive:'true' })
+  
+
+        if(existingUser){ 
+            next();
+        }else{
+           
+            req.session.user = null;
+            console.log('hii this is inner else')
+            res.redirect('/login');
+        }
+    }else{
+        console.log('hii this is outer else')
+        res.redirect('/login');
+    }
+   
+   
+   
+}

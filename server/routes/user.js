@@ -54,12 +54,12 @@ router.post('/change-product-quantity',cartController.changeProductQuantity);
 
 
 router.post('/remove-product-cart',cartController.removeProductCart);
-router.get('/checkout',userVerify.verifyUserLogin,cartController.checkOutPage);
+router.get('/checkout',userVerify.verifyIsActive,cartController.checkOutPage);
 router.get('/product-size-selector/:id/',cartController.productSizeSelector)
 
   
 //order controller
-router.post('/place-order',orderController.placeOrder);
+router.post('/place-order',userVerify.verifyIsActive,orderController.placeOrder);
 router.get('/order-success',userVerify.verifyUserLogin,orderController.orderSuccess);
 router.get('/orders',userVerify.verifyUserLogin,orderController.orderDetails);
 router.get('/view-placed-orders/:id',userVerify.verifyUserLogin,orderController.viewPlacedOrder);
