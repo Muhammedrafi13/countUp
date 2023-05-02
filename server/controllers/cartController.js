@@ -56,7 +56,7 @@ exports.addToCart = async (req,res)=>{
   
   exports.getCartProducts = async (req,res)=>{
     try{
-      let cartuuu = await Cart.findOne({user:req.session.user._id})
+     
 
       let cartItems = await Cart.aggregate([
         {
@@ -569,11 +569,7 @@ exports.addToCart = async (req,res)=>{
       const hasAddress = user.address && user.address.length > 0;
  
       let couponDis;
-      // if(user.appliedCoupon.length){
-      //   let appliedCoupon = user.appliedCoupon[0];
-      //   console.log(appliedCoupon,'coup')
-      //    couponDis = appliedCoupon.coupondis;
-      // }
+    
    
       if(req.session.coupon){
         couponDis = req.session.coupon.discount

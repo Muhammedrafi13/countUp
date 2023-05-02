@@ -7,7 +7,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 //admin
 exports.couponPage = async (req,res)=>{
-    let adminDetails =req.session.admin;
+    const adminDetails =req.session.admin;
     let coupon = await Coupon.find()
 
     res.locals.coupon = coupon

@@ -530,7 +530,7 @@ exports.orderSummary = async(req,res)=>{
 //admin
 
 exports.ordersAdminPanal = async (req,res)=>{
-   let adminDetails = req.session.admin;
+   const adminDetails = req.session.admin;
    let orders = await Order.find()
    .populate({
      path: 'userId',

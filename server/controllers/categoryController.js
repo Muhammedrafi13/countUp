@@ -2,7 +2,7 @@ const Category = require('../models/categorySchema');
 const mongoose = require('mongoose');
 
 exports.categoryPage = async(req,res)=>{
-    let adminDetails =req.session.admin;
+    const adminDetails =req.session.admin;
     let categoryData = await Category.find();
    
     if(req.session.admin.categoryErr){

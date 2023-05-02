@@ -61,7 +61,7 @@ exports.logout = async (req, res) => {
 
 exports.getDashboard = async (req, res) => {
   const jsPDF = require('jspdf');
-  let adminDetails = req.session.admin;
+  const adminDetails = req.session.admin;
   const orders = await Order.find({})
     .populate({
       path: 'products.item',
