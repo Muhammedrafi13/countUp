@@ -153,7 +153,7 @@ exports.postlogin = async (req, res) => {
             if (existingUser.isActive) {
                 bcrypt.compare(req.body.password, existingUser.password).then(async(status) => {
                     if (status) {
-                    
+                     
                         req.session.user = existingUser;
                         req.session.user.loggedIn = true;
                        

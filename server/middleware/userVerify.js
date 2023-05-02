@@ -1,8 +1,10 @@
 const wishlist = require('../models/wishlistSchema')
 const Cart = require('../models/cartSchema')
 const User = require('../models/userSchema')
+
 exports.verifyUserLogin =async (req, res, next) => {
     if (req.session.user) {
+        
         next();
     } else {
         res.redirect('/login');
