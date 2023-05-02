@@ -57,7 +57,7 @@
                       multiple>
                   </div>
 
-
+                  <p class="err"><%=locals.imgErr??"" %></p>
 
                   <button type="submit" class="btn btn-success mt-4">Submit</button>
                 </form>
@@ -97,8 +97,9 @@
         productName: {
           required: true,
           noSpecialChars: true,
+          maxlength:20,
           minlength: 3,
-
+          
         },
         productPrice: {
           required: true,

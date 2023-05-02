@@ -58,11 +58,9 @@ exports.verifyIsActive = async(req,res,next)=>{
         }else{
            
             req.session.user = null;
-            console.log('hii this is inner else')
             res.redirect('/login');
         }
     }else{
-        console.log('hii this is outer else')
         res.redirect('/login');
     }
    

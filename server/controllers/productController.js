@@ -184,6 +184,10 @@ exports.postSearch = async(req,res)=>{
 exports.addProductPage = async (req, res) => {
   let adminDetails = req.session.admin;
   let categoryData = await Category.find();
+  if(req.session.imgErr){
+     res.locals.imgErr=req.session.imgErr;
+     req.session.imgErr=null;
+  }
   res.render('admin/addProduct', { admin: true, adminDetails, categoryData })
 }
 
@@ -191,9 +195,13 @@ exports.postProduct = (req, res, next) => {
   upload.array('Image', 4)(req, res, async (err) => {
     if (err) {
       if (err.code === 'LIMIT_FILE_TYPES') {
-        return res.status(400).send({ error: 'Invalid file type. Only .png, .jpg and .jpeg format allowed.' });
+        req.session.imgErr="invalid file type! only .png .jpg and .jpeg format allowed";
+        return res.redirect('/admin/Product');
+        // return res.status(400).send({ error: 'Invalid file type. Only .png, .jpg and .jpeg format allowed.' });
       } else {
-        return res.status(400).send({ error: err.message });
+        req.session.imgErr="maximum 4 images can be upload";
+        return res.redirect('/admin/Product');
+        // return res.status(400).send({ error: 'only 4 img' });
       }
     }
   
