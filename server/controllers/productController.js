@@ -43,8 +43,11 @@ const upload = multer({
 
 exports.mensPage = async (req, res) => {
   try {
-    const mensProducts = await Product.find({ gender: { $all: ["men"] },softdelete: false });
-    res.render('user/menCollection', { mensProducts });
+    const pageSize = 4;
+    const mensProducts = await Product.find({ gender: { $all: ["men"] },softdelete: false }).limit(pageSize);
+    const totalCount = await Product.find({ gender: { $all: ["men"] },softdelete: false  }).countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+    res.render('user/menCollection', { mensProducts,totalPages });
   } catch (error) {
     console.log(error);
   }
@@ -52,8 +55,15 @@ exports.mensPage = async (req, res) => {
 }
 exports.womensPage = async (req, res) => {
   try {
-    const womensProducts = await Product.find({ gender: { $all: ["women"] },softdelete: false  });
-    res.render('user/womenCollection', { womensProducts });
+    const pageSize = 4;
+    const womensProducts = await Product.find({ gender: { $all: ["women"] },softdelete: false  }).limit(pageSize);
+
+    const totalCount = await Product.find({ gender: { $all: ["women"] },softdelete: false  }).countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+
+
+    res.render('user/womenCollection', { womensProducts,totalPages });
+
   } catch (error) {
     console.log(error);
   }
@@ -61,9 +71,12 @@ exports.womensPage = async (req, res) => {
 }
 exports.kidsPage = async (req, res) => {
   try {
-    const kidsProducts = await Product.find({ gender: { $in: [ "girls","boys"] },softdelete: false  });
-  
-    res.render('user/kidsCollection', { kidsProducts });
+    const pageSize = 4;
+    const kidsProducts = await Product.find({ gender: { $in: [ "girls","boys"] },softdelete: false  }).limit(pageSize);
+
+    const totalCount = await Product.find({ gender: { $in: [ "girls","boys"] },softdelete: false  }).countDocuments();
+    const totalPages = Math.ceil(totalCount / pageSize);
+    res.render('user/kidsCollection', { kidsProducts,totalPages });
   } catch (error) {
     console.log(error);
   }
@@ -99,11 +112,12 @@ exports.shopPage = async (req, res) => {
     }
     else{
       res.locals.product = await Product.find({gender:{ $all : ["men"]},softdelete: false })
+      req.session.product = null;
     }
 
     let categoryNames=await Category.find()
    
-  
+    console.log(res.locals.product)
    
     res.render('user/shop', { user,categoryNames  });
   } catch (error) {
@@ -139,8 +153,6 @@ exports.genderFilter = async(req,res)=>{
   }
    
 
-  
-
 
       req.session.product = product
       res.json(true)
@@ -160,6 +172,22 @@ exports.postSearch = async(req,res)=>{
    
 }
 
+exports.pagination = async(req,res)=>{
+  console.log(req.query.gender,'gender')
+  const pageSize = 4;
+  const pageNumber =parseInt(req.params.id);
+  const skip = (pageNumber - 1) * pageSize;
+  let products;
+  if(req.query.gender=="kids"){
+     products = await Product.find({ gender: { $in: [ "girls","boys"] },softdelete: false  }).skip(skip).limit(pageSize);
+  }else{
+     products = await Product.find({ gender: { $all: [req.query.gender] },softdelete: false  }).skip(skip).limit(pageSize);
+  }
+
+  console.log(products,'products')
+  res.json(products)
+
+}
 
 
 

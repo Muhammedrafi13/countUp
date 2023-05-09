@@ -70,7 +70,7 @@
                 </ul>
             </div>
         </div>
-        <div class="row property__gallery">
+        <div class="row property__gallery" id="paginated_content">
             <% womensProducts.forEach(element => { %>
             <div class="col-lg-3 col-md-4 col-sm-6 mix men">
                 <div class="product__item">
@@ -103,10 +103,18 @@
             <% }) %>
 
         </div>
+        
+        <div class="col-lg-12 text-center">
+            <div class="pagination__option">
+                 <% for( let index = 1; index <= locals.totalPages; index++ ) { %>
+                    <a   onclick="pagination('<%=index %>')"><%= index %></a>
+                 <% } %>
+                
+            </div>
+        </div>
+ 
 
-
-
-
+   
 
 
 
@@ -225,4 +233,53 @@ function addToWishList(proId){
           }
       })
   }
+ 
+
+  
+  function pagination(value){
+    showLoader()
+    $.ajax({
+        url:`/pagination/${value}/?gender=women`,
+        method:'get',
+        success:(response)=>{
+            console.log(response)
+            let productList='';
+            $('#paginated_content').empty();
+            for(let i=0; i<response.length; i++){
+               
+                productList += `
+                    <div class="col-lg-3 col-md-4 col-sm-6 mix men ">
+                        <div class="product__item">
+                            <div class="product__item__pic set-bg" data-setbg="/product-images/${response[i].images[0]}" onclick="location.href='/image/${response[i]._id}';">
+                                <img src="/product-images/${response[i].images[0]}">
+                                <div class="label new">New</div>
+                                <ul class="product__hover">
+                                    <li>
+                                        <a id="" type="button" onclick="addToWishList(${response[i]._id});event.stopPropagation();""><span class="icon_heart_alt"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="product__item__text">
+                                <h6><a href="#"> ${response[i].productName}</a></h6>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                                <div class="product__price">${response[i].salePrice}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            $('#paginated_content').append(productList);
+            hideLoader()
+        }
+    });
+}
+
+
 </script>

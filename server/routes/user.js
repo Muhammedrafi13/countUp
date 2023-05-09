@@ -36,7 +36,7 @@ router.get('/otp',tempUserVerify.verifyTempLogin,otpController.otpPage);
 router.post('/otp',otpController.postOtp);
 
 
-//prodcut controller
+//product controller
 
 router.get('/menCollection',productController.mensPage);
 router.get('/womenCollection',productController.womensPage);
@@ -45,6 +45,7 @@ router.get('/image/:id',productController.viewImage);
 router.get('/shop',productController.shopPage);
 router.post('/shop',productController.postSearch);
 router.get('/gender-shop/:gender?/:category?',productController.genderFilter);
+router.get('/pagination/:id/:category?',productController.pagination);
 
 
 //cart controller

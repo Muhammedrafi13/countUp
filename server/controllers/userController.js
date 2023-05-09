@@ -34,7 +34,7 @@ exports.HomePage = async (req, res) => {
         // Sort each group by createdAt date in descending order
         { $project: {
             _id: 1,
-            products: { $slice: [ '$products', 9 ] }
+            products: { $slice: [ '$products', 4 ] }
         }}
       ])
       const productsByGender = {};
